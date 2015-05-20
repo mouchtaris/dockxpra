@@ -28,6 +28,10 @@ RUN pkgfile --update
 RUN mkdir -pv /local
 RUN curl https://aur.archlinux.org/packages/xp/xpra-winswitch/xpra-winswitch.tar.gz > /local/xpra.tar.gz
 
+### Sfins
+RUN pacman -S --noconfirm --needed git
+RUN pacman -S --noconfirm --needed svn
+
 RUN ssh-keygen -t rsa -N '' -C '' -f /etc/ssh/ssh_host_rsa_key
 RUN sed -i -r -e 's/^\s*#?\s*(UsePAM).*$/\1 no/' /etc/ssh/sshd_config
 RUN sed -i -r -e 's/^\s*#?\s*(X11Forwarding).*$/\1 yes/' /etc/ssh/sshd_config
