@@ -6,31 +6,32 @@ RUN pacman -Syu --noconfirm
 RUN pacman -S --noconfirm --needed base
 RUN pacman -S --noconfirm --needed base-devel
 RUN pacman -S --noconfirm --needed ffmpeg
+RUN pacman -S --noconfirm --needed firefox
 RUN pacman -S --noconfirm --needed fish
+RUN pacman -S --noconfirm --needed git
 RUN pacman -S --noconfirm --needed jdk8-openjdk
 RUN pacman -S --noconfirm --needed libwebp
 RUN pacman -S --noconfirm --needed libxtst
 RUN pacman -S --noconfirm --needed libxtst
 RUN pacman -S --noconfirm --needed openssh
 RUN pacman -S --noconfirm --needed pkgfile
+RUN pacman -S --noconfirm --needed pulseaudio
 RUN pacman -S --noconfirm --needed pygtk
 RUN pacman -S --noconfirm --needed python2
 RUN pacman -S --noconfirm --needed python2-imaging
 RUN pacman -S --noconfirm --needed sudo
+RUN pacman -S --noconfirm --needed svn
 RUN pacman -S --noconfirm --needed vim
 RUN pacman -S --noconfirm --needed x264
 RUN pacman -S --noconfirm --needed xf86-video-dummy
 RUN pacman -S --noconfirm --needed xorg
 RUN pacman -S --noconfirm --needed xorg-server-xvfb
+RUN pacman -S --noconfirm --needed xterm
 RUN pacman -Ssq ttf- | xargs pacman -S --noconfirm --needed
 RUN pkgfile --update
 
 RUN mkdir -pv /local
 RUN curl https://aur.archlinux.org/packages/xp/xpra-winswitch/xpra-winswitch.tar.gz > /local/xpra.tar.gz
-
-### Sfins
-RUN pacman -S --noconfirm --needed git
-RUN pacman -S --noconfirm --needed svn
 
 RUN ssh-keygen -t rsa -N '' -C '' -f /etc/ssh/ssh_host_rsa_key
 RUN sed -i -r -e 's/^\s*#?\s*(UsePAM).*$/\1 no/' /etc/ssh/sshd_config
