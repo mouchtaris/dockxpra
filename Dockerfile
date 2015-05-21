@@ -41,7 +41,7 @@ RUN sed -i -r -e 's/^\s*#?\s*(X11DisplayOffset).*$/\1 10/' /etc/ssh/sshd_config
 RUN sed -i -r -e 's/.*\%wheel\s+ALL=\(ALL\).*/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
 
 RUN groupadd sudo
-RUN useradd -G sudo,wheel -m nikos
+RUN useradd -G sudo,wheel -M nikos && mkdir /home/nikos && chown -Rv nikos:nikos /home/nikos
 USER nikos
 WORKDIR /local/nikos
 
