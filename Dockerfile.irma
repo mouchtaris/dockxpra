@@ -76,11 +76,13 @@ RUN true \
 RUN sudo pacman -Syu
 RUN true \
     && cd tmp/xpra/* \
-    && echo xpra-winswitch-*.tar.xz \
-    && ls -al /var/lib/pacman \
     && sync \
-    && sudo pacman --noconfirm -U xpra-winswitch-*.tar.xz
-RUN rm -rv tmp/xpra
+    && sudo pacman --noconfirm -U xpra-winswitch-*.tar.xz \
+    && sudo cp -av xpra-winswitch-*.tar.xz /var/cache/pacman/pkg/xpra.tar.xz \
+    && sudo cp -av /var/lib/pacman/sync/*.db /var/cache/pacman/pkg/ \
+    && sudo cp -av /var/cache/pkgfile/*.files /var/cache/pacman/pkg \
+    && true
+RUN rm -r tmp/xpra
 
 EXPOSE 1974:1974
 CMD darkhttpd /var/cache/pacman/pkg --addr 0.0.0.0 --port 1974

@@ -1,7 +1,6 @@
 # vim: et ts=4 sw=4
 FROM l3iggs/archlinux
 MAINTAINER Nikos Mouchtaris <nikos@azavista.com>
-
 RUN true \
     && printf '%s\n%s\n' \
             'Server = http://%%IRMA%%' \
@@ -10,7 +9,7 @@ RUN true \
     && true
 RUN true \
     && pacman -Ssq ttf- | \
-        xargs pacman -S --noconfirm --needed \
+        xargs script /dev/null -c 'pacman -Syu --noconfirm --needed \
             base \
             base-devel \
             darkhttpd \
@@ -35,10 +34,16 @@ RUN true \
             xf86-video-dummy \
             xorg \
             xorg-server-xvfb \
-            xpra-winswitch \
             xterm \
+            ' \
+    && sync \
     && true
 RUN pkgfile --update
+RUN true \
+    && cd /tmp \
+    && aria2c http://%%IRMA%%/xpra.tar.xz \
+    && pacman -U xpra.tar.xz \
+    && true
 
 RUN ssh-keygen -t rsa -N '' -C '' -f /etc/ssh/ssh_host_rsa_key
 RUN sed -i -r -e 's/^\s*#?\s*(UsePAM).*$/\1 no/' /etc/ssh/sshd_config
