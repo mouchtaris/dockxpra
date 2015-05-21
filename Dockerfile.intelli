@@ -1,0 +1,67 @@
+# vim: et ts=4 sw=4
+FROM l3iggs/archlinux
+MAINTAINER Nikos Mouchtaris <nikos@azavista.com>
+
+RUN true \
+    && printf '%s\n%s\n' \
+            'Server = http://%%IRMA%%' \
+            'Server = http://ftp.nluug.nl/os/Linux/distr/archlinux/$repo/os/$arch' \
+        | tee /etc/pacman.d/mirrorlist \
+    && true
+RUN true \
+    && pacman -Ssq ttf- | \
+        xargs pacman -S --noconfirm --needed \
+            base \
+            base-devel \
+            darkhttpd \
+            ffmpeg \
+            firefox \
+            fish \
+            git \
+            jdk8-openjdk \
+            libwebp \
+            libxtst \
+            libxtst \
+            openssh \
+            pkgfile \
+            pulseaudio \
+            pygtk \
+            python2 \
+            python2-imaging \
+            sudo \
+            svn \
+            vim \
+            x264 \
+            xf86-video-dummy \
+            xorg \
+            xorg-server-xvfb \
+            xpra-winswitch \
+            xterm \
+    && true
+RUN pkgfile --update
+
+RUN ssh-keygen -t rsa -N '' -C '' -f /etc/ssh/ssh_host_rsa_key
+RUN sed -i -r -e 's/^\s*#?\s*(UsePAM).*$/\1 no/' /etc/ssh/sshd_config
+RUN sed -i -r -e 's/^\s*#?\s*(X11Forwarding).*$/\1 yes/' /etc/ssh/sshd_config
+RUN sed -i -r -e 's/^\s*#?\s*(X11UseLocalhost).*$/\1 yes/' /etc/ssh/sshd_config
+RUN sed -i -r -e 's/^\s*#?\s*(X11DisplayOffset).*$/\1 10/' /etc/ssh/sshd_config
+RUN sed -i -r -e 's/.*\%wheel\s+ALL=\(ALL\).*/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
+
+RUN groupadd sudo
+RUN useradd -G sudo,wheel -M nikos && mkdir /home/nikos && chown -Rv nikos:nikos /home/nikos
+RUN mkdir -pv /local/nikos/tmp
+RUN chown -Rv nikos:nikos /local/nikos
+USER nikos
+WORKDIR /local/nikos
+
+ENV _JAVA_OPTIONS -Dawt.useSystemAAFontSettings=lcd
+ENV JAVA_FONTS /usr/share/fonts/TTF/
+ENV EDITOR vim
+
+ADD ideaIU-14.1.3.tar.gz .
+RUN sudo chown -R -v nikos:nikos .
+
+RUN printf 'nikos:2\n' | sudo chpasswd
+EXPOSE 22
+CMD sudo /usr/sbin/sshd -D
+
