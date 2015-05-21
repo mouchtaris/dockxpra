@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ssh hagrid docker rm -f ide_intelli
+ssh hagrid docker run --name ide_intelli -d --volumes-from ide_home -ti -P intelli

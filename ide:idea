@@ -1,0 +1,4 @@
+#!/bin/bash
+
+port=$(ide:port)
+ide:xdocker xpra start ssh/nikos@hagrid.magodruidi.com:$port/114 --no-pulseaudio --exit-with-children --start-child /home/nikos/idea.sh
