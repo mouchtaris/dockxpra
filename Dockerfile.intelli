@@ -41,7 +41,7 @@ RUN true \
 RUN true \
     && cd /tmp \
     && aria2c http://%%IRMA%%/xpra.tar.xz \
-    && pacman -U xpra.tar.xz \
+    && pacman -U --noconfirm --needed xpra.tar.xz \
     && true
 
 RUN ssh-keygen -t rsa -N '' -C '' -f /etc/ssh/ssh_host_rsa_key
