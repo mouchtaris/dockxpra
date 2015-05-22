@@ -9,7 +9,7 @@ RUN true \
     && true
 RUN true \
     && pacman -Ssq ttf- | \
-        xargs script /dev/null -c 'pacman -Syu --noconfirm --needed \
+        pacman -Syu --noconfirm --needed \
             aria2 \
             base \
             base-devel \
@@ -35,7 +35,6 @@ RUN true \
             xorg \
             xorg-server-xvfb \
             xterm \
-            ' \
     && sync \
     && true
 RUN true \
