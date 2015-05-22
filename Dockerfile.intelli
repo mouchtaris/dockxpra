@@ -9,7 +9,7 @@ RUN true \
     && true
 RUN true \
     && pacman -Ssq ttf- | \
-        pacman -Syu --noconfirm --needed \
+        xargs pacman -Syu --noconfirm --needed \
             aria2 \
             base \
             base-devel \
