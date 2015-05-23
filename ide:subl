@@ -1,3 +1,0 @@
-#!/bin/bash
-
-ide:ssh env DISPLAY=:$(ide:display) /home/nikos/sublime

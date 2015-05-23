@@ -1,4 +1,0 @@
-#!/bin/bash
-
-port=$(ide:port)
-ide:xdocker xpra start ssh/nikos@hagrid.magodruidi.com:$port/$(ide:display) --no-pulseaudio --exit-with-children --start-child /home/nikos/xterm
