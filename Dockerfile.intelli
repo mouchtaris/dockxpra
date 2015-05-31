@@ -1,72 +1,87 @@
 # vim: et ts=4 sw=4
 FROM l3iggs/archlinux
 MAINTAINER Nikos Mouchtaris <nikos@azavista.com>
+
 RUN true \
-    && printf '%s\n%s\n' \
-            'Server = http://%%IRMA%%' \
+    && printf '%s\n' \
             'Server = http://ftp.nluug.nl/os/Linux/distr/archlinux/$repo/os/$arch' \
         | tee /etc/pacman.d/mirrorlist \
-    && true
-RUN true \
-    && pacman -Ssq ttf- | \
-        xargs pacman -Syu --noconfirm --needed \
-            aria2 \
-            base \
-            base-devel \
-            darkhttpd \
-            ffmpeg \
-            firefox \
-            fish \
-            git \
-            jdk7-openjdk \
-            libwebp \
-            libxtst \
-            libxtst \
-            openssh \
-            pulseaudio \
-            pygtk \
-            python2 \
-            python2-imaging \
-            rsync \
-            sbt \
-            sudo \
-            svn \
-            vim \
-            x264 \
-            xf86-video-dummy \
-            xorg \
-            xorg-server-xvfb \
-            xterm \
-    && sync \
-    && true
-RUN true \
-    && cd /tmp \
-    && aria2c http://%%IRMA%%/xpra.tar.xz \
-    && pacman -U --noconfirm --needed xpra.tar.xz \
+    && pacman -Syu --noconfirm --needed aria2 sudo \
     && true
 
-RUN ssh-keygen -t rsa -N '' -C '' -f /etc/ssh/ssh_host_rsa_key
-RUN sed -i -r -e 's/^\s*#?\s*(UsePAM).*$/\1 no/' /etc/ssh/sshd_config
-RUN sed -i -r -e 's/^\s*#?\s*(X11Forwarding).*$/\1 yes/' /etc/ssh/sshd_config
-RUN sed -i -r -e 's/^\s*#?\s*(X11UseLocalhost).*$/\1 yes/' /etc/ssh/sshd_config
-RUN sed -i -r -e 's/^\s*#?\s*(X11DisplayOffset).*$/\1 10/' /etc/ssh/sshd_config
-RUN sed -i -r -e 's/.*\%wheel\s+ALL=\(ALL\).*/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers
-
-RUN groupadd sudo
-RUN useradd -G sudo,wheel -M nikos && mkdir /home/nikos && chown -Rv nikos:nikos /home/nikos
-RUN mkdir -pv /local/nikos/tmp
-RUN chown -Rv nikos:nikos /local/nikos
+RUN true \
+    && sed -r -i -e \
+        's/^\s*#\s*XferCommand.*/XferCommand = aria2c -d\/ -j20 -c -x16 -o %o -s20 --file-allocation=falloc --no-conf -R %u/g' \
+        /etc/pacman.conf \
+    && groupadd sudo \
+    && useradd -G sudo,wheel --no-create-home --uid 1001 nikos \
+    && mkdir -pv /local/nikos /home/nikos \
+    && chown -Rv nikos:nikos /local/nikos /home/nikos \
+    && sed -i -r -e 's/.*\%wheel\s+ALL=\(ALL\).*/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers \
+    && true
 USER nikos
 WORKDIR /local/nikos
+
+RUN sudo pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed
+RUN sudo pacman -S --noconfirm --needed base
+RUN sudo pacman -S --noconfirm --needed base-devel
+RUN sudo pacman -S --noconfirm --needed darkhttpd
+RUN sudo pacman -S --noconfirm --needed ffmpeg
+RUN sudo pacman -S --noconfirm --needed firefox
+RUN sudo pacman -S --noconfirm --needed fish
+RUN sudo pacman -S --noconfirm --needed git
+RUN sudo pacman -S --noconfirm --needed jdk8-openjdk
+RUN sudo pacman -S --noconfirm --needed libwebp
+RUN sudo pacman -S --noconfirm --needed libxtst
+RUN sudo pacman -S --noconfirm --needed libxtst
+RUN sudo pacman -S --noconfirm --needed openssh
+RUN sudo pacman -S --noconfirm --needed pkgfile
+RUN sudo pacman -S --noconfirm --needed pulseaudio
+RUN sudo pacman -S --noconfirm --needed pygtk
+RUN sudo pacman -S --noconfirm --needed python2
+RUN sudo pacman -S --noconfirm --needed python2-imaging
+RUN sudo pacman -S --noconfirm --needed rsync
+RUN sudo pacman -S --noconfirm --needed sbt
+RUN sudo pacman -S --noconfirm --needed sudo
+RUN sudo pacman -S --noconfirm --needed svn
+RUN sudo pacman -S --noconfirm --needed vim
+RUN sudo pacman -S --noconfirm --needed x264
+RUN sudo pacman -S --noconfirm --needed xf86-video-dummy
+RUN sudo pacman -S --noconfirm --needed xorg
+RUN sudo pacman -S --noconfirm --needed xorg-server-xvfb
+RUN sudo pacman -S --noconfirm --needed xterm
+RUN sudo pkgfile --update
+
+RUN aria2c https://aur.archlinux.org/packages/xp/xpra-winswitch/xpra-winswitch.tar.gz
+RUN true \
+    && mkdir -pv tmp/xpra \
+    && cd tmp/xpra \
+    && tar xvf /local/nikos/xpra-winswitch.tar.gz \
+    && cd * \
+    && printf '#!/bin/bash\n\npacman --noconfirm $@\n' | tee pakpak \
+    && chmod 700 pakpak \
+    && env PACMAN=$(pwd)/pakpak makepkg -s \
+    && sync \
+    && sudo pacman --noconfirm -U xpra-winswitch-*.tar.xz \
+    && cd ../../.. \
+    && pwd && ls -al \
+    && rm -r tmp/xpra
+RUN sudo pacman -Syu
+
+RUN true \
+    && ssh-keygen -t rsa -N '' -C '' -f - | sudo tee /etc/ssh/ssh_host_rsa_key \
+    && sudo sed -i -r -e 's/^\s*#?\s*(UsePAM).*$/\1 no/' /etc/ssh/sshd_config \
+    && sudo sed -i -r -e 's/^\s*#?\s*(X11Forwarding).*$/\1 yes/' /etc/ssh/sshd_config \
+    && sudo sed -i -r -e 's/^\s*#?\s*(X11UseLocalhost).*$/\1 yes/' /etc/ssh/sshd_config \
+    && sudo sed -i -r -e 's/^\s*#?\s*(X11DisplayOffset).*$/\1 10/' /etc/ssh/sshd_config \
+    && true \
+    && true \
+    && sudo sed -i -r -e 's/^\s*#\s*(Color)\s*$/\1/' /etc/pacman.conf \
+    && true
 
 ENV _JAVA_OPTIONS -Dawt.useSystemAAFontSettings=lcd
 ENV JAVA_FONTS /usr/share/fonts/TTF/
 ENV EDITOR vim
 
-ADD ideaIU-14.1.3.tar.gz .
-RUN sudo chown -R -v nikos:nikos .
-
 RUN printf 'nikos:2\n' | sudo chpasswd
-EXPOSE 22
 CMD sudo /usr/sbin/sshd -D
-
