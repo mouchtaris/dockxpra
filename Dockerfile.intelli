@@ -34,6 +34,7 @@ RUN pacman -S --noconfirm --needed sudo
 RUN pacman -S --noconfirm --needed svn
 RUN pacman -S --noconfirm --needed vim
 RUN pacman -S --noconfirm --needed x264
+RUN pacman -S --noconfirm --needed xclip
 RUN pacman -S --noconfirm --needed xf86-video-dummy
 RUN pacman -S --noconfirm --needed xorg
 RUN pacman -S --noconfirm --needed xorg-server-xvfb
