@@ -20,7 +20,7 @@ RUN pacman -S --noconfirm --needed git
 RUN pacman -S --noconfirm --needed jdk8-openjdk
 RUN pacman -S --noconfirm --needed libwebp
 RUN pacman -S --noconfirm --needed libxtst
-RUN pacman -S --noconfirm --needed libxtst
+RUN pacman -S --noconfirm --needed maven
 RUN pacman -S --noconfirm --needed openssh
 RUN pacman -S --noconfirm --needed pkgfile
 RUN pacman -S --noconfirm --needed pulseaudio
