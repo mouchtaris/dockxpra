@@ -70,7 +70,7 @@ RUN true \
     && cd ../../.. \
     && pwd && ls -al \
     && rm -r tmp/xpra
-RUN sudo pacman -Syu
+RUN sudo pacman -Syu --noconfirm --needed
 
 RUN true \
     && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
