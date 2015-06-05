@@ -110,6 +110,7 @@ RUN true \
     && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
     && chmod -v 600 ssh_host_rsa_key \
     && sudo cp --preserve=mode,timestamps ssh_host_rsa_key /etc/ssh \
+    && sudo sed -i -r -e 's/^\s*#?\s*(PasswordAuthentication).*$/\1 no/' /etc/ssh/sshd_config \
     && sudo sed -i -r -e 's/^\s*#?\s*(UsePAM).*$/\1 no/' /etc/ssh/sshd_config \
     && sudo sed -i -r -e 's/^\s*#?\s*(X11Forwarding).*$/\1 yes/' /etc/ssh/sshd_config \
     && sudo sed -i -r -e 's/^\s*#?\s*(X11UseLocalhost).*$/\1 yes/' /etc/ssh/sshd_config \
