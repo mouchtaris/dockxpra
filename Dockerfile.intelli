@@ -55,23 +55,57 @@ RUN true \
 USER nikos
 WORKDIR /local/nikos
 
-
-RUN aria2c https://aur.archlinux.org/packages/xp/xpra-winswitch/xpra-winswitch.tar.gz
+RUN mkdir -pv /local/nikos/aur
+RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/packages/xp/xpra-winswitch/xpra-winswitch.tar.gz
+RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/packages/py/python2-lz4/python2-lz4.tar.gz
 RUN true \
-    && mkdir -pv tmp/xpra \
-    && cd tmp/xpra \
-    && tar xvf /local/nikos/xpra-winswitch.tar.gz \
-    && cd * \
-    && printf '#!/bin/bash\n\npacman --noconfirm $@\n' | tee pakpak \
-    && chmod 700 pakpak \
-    && env PACMAN=$(pwd)/pakpak makepkg -s \
-    && sync \
-    && sudo pacman --noconfirm -U xpra-winswitch-*.tar.xz \
-    && cd ../../.. \
-    && pwd && ls -al \
-    && rm -r tmp/xpra
-RUN sudo pacman -Syu --noconfirm --needed
-
+    &&  { true \
+        && printf '%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
+            '#!/usr/bin/env ruby' \
+            'filename = ARGV.shift' \
+            'STDERR.puts "*** Making script [#{filename}]..."' \
+            'File.open(filename, "w") do |fout|' \
+            '    ARGV.each do |arg|' \
+            '        fout.puts arg' \
+            '        puts arg' \
+            '    end' \
+            '    fout.chmod 0755' \
+            'end' \
+            | tee /local/nikos/make_script \
+        && chmod -v 755 /local/nikos/make_script \
+        ; } \
+    &&  { true \
+        && /local/nikos/make_script /local/nikos/pacman_for_dockers \
+            '#!/bin/bash' \
+            '' \
+            'pacman --noconfirm "$@"' \
+        ; } \
+    && { true \
+        && /local/nikos/make_script /local/nikos/aur_install \
+            '#!/bin/bash' \
+            '' \
+            'package=$1' \
+            'shift' \
+            '' \
+            '{' \
+            '    mkdir -pv tmp/aur &&' \
+            '    cd tmp/aur &&' \
+            '    tar xvf /local/nikos/aur/$package.tar.gz &&' \
+            '    cd * &&' \
+            '    cp -av /local/nikos/pacman_for_dockers ./ &&' \
+            '    PACMAN=$(pwd)/pacman_for_dockers makepkg -s &&' \
+            '    sync &&' \
+            '    sudo ./pacman_for_dockers --upgrade $package-*.tar.xz &&' \
+            '    cd ../../.. &&' \
+            '    rm -rv tmp &&' \
+            '    true' \
+            '}' \
+        ; } \
+    && true
+RUN true \
+    && /local/nikos/aur_install python2-lz4 \
+    && /local/nikos/aur_install xpra-winswitch \
+    && true
 RUN true \
     && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
     && chmod -v 600 ssh_host_rsa_key \
