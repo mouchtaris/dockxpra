@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ide:ssh_hagrid docker rm -f irma
+ide:ssh_hagrid docker run --name irma -u nikos -d -v /home/nikos/homes/irma:/irma -ti -p 22 intelli

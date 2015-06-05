@@ -1,0 +1,21 @@
+#!/bin/bash
+
+mydir="$(cd "$(dirname "$0")" && /usr/bin/env pwd)"
+
+if [[ $# < 1 ]]
+  then
+  cat "$mydir"/"$(basename "$0")".man 1>&2
+  exit 1
+fi
+
+name="$1"
+shift
+
+address="ssh://nikos@hagrid:$("$mydir"/irma:port)/irma/${name}.git"
+
+if git remote | grep -E -e '^irma$'
+then
+  git remote set-url irma "$address"
+else
+  git remote add irma "$address"
+fi

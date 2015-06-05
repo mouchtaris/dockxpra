@@ -1,0 +1,7 @@
+Usage:
+
+    irma:remote REPO_NAME
+
+- create or update remote named "irma"
+- for the git repo found in current dir
+- remote address is irma-specific + /REPO_NAME.git
