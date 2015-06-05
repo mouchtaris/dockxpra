@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ide:ssh_hagrid docker port ide_intelli 22/tcp | sed -r -e 's/([[:digit:]]{1,3}\.){3}[[:digit:]]{1,3}:([[:digit:]]+).*/\2/'
+hagrid_docker:port ide_intelli 22/tcp
