@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ $# < 1 ]];
+  then
+  printf 'Usage:\n\n    %s HOME_CONTAINER\n\nAppend keys found in ssh-add -L to the authorized_keys of the home dir found in HOME_CONTAINER docker container on hagrid\n' "$0" 1>&2
+  exit 1
+fi
+
+home_container="$1"
+shift
+
+ssh-add -L |
+  ide:ssh_hagrid bash -c \
+    "$(_shellescape \
+    'docker run --rm -i --volumes-from '"$home_container"' intelli bash -c "mkdir -pv ~/.ssh && tee -a ~/.ssh/authorized_keys"' )"
