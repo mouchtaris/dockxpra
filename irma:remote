@@ -11,3 +11,8 @@ then
 else
   git remote add irma "$address"
 fi
+
+ssh-add -L |
+  ide:ssh_hagrid bash -c \
+    "$(ruby -r shellwords -e 'ARGV.map(&Shellwords.method(:escape)).each(&method(:print))' \
+    'docker run --rm -i --volumes-from irma_home intelli bash -c "mkdir -pv ~/.ssh && tee -a ~/.ssh/authorized_keys"' )"

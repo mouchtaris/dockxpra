@@ -3,6 +3,4 @@
 ide:ssh_hagrid bash -c "$(ruby -r shellwords -e 'ARGV.map(&Shellwords.method(:escape)).each(&method(:print))' \
 	'docker rm -f -v irma irma_home &&' \
 	'docker run --name irma_home -d -v /home/nikos -ti intelli /bin/true' )"
-ssh-add -L | ide:ssh_hagrid bash -c "$(ruby -r shellwords -e 'ARGV.map(&Shellwords.method(:escape)).each(&method(:print))' \
-	'docker run --rm -i --volumes-from irma_home intelli bash -c "mkdir -pv ~/.ssh && tee ~/.ssh/authorized_keys"' )"
 ide:ssh_hagrid docker run --name irma -d -v /home/nikos/homes/irma:/irma --volumes-from irma_home -ti -p 22 intelli
