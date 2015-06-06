@@ -1,17 +1,9 @@
 #!/bin/bash
 
 mydir="$(cd "$(dirname "$0")" && /usr/bin/env pwd)"
+export PATH="$mydir":"$PATH"
 
-if [[ $# < 1 ]]
-  then
-  cat "$mydir"/"$(basename "$0")".man 1>&2
-  exit 1
-fi
-
-name="$1"
-shift
-
-address="ssh://nikos@hagrid:$("$mydir"/irma:port)/irma/${name}.git"
+address="ssh://nikos@hagrid:$(irma:port)/$(_irma:get_repo_address)"
 
 if git remote | grep -E -e '^irma$'
 then

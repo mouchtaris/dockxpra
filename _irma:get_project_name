@@ -1,0 +1,3 @@
+#!/bin/bash
+
+basename "$(/usr/bin/env pwd)"

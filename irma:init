@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mydir="$(cd "$(dirname "$0")" && /usr/bin/env pwd)"
+export PATH="$mydir":"$PATH"
+
+address="$(_irma:get_repo_address)"
+comm="$(ruby -r shellwords -e 'ARGV.map(&Shellwords.method(:escape)).each(&method(:puts))' \
+	'if [ ! -d '\'"$address"\'' ]; then git init --bare '\'"/$address"\''; fi' )"
+irma:ssh bash -c "$comm"

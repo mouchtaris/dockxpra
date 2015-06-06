@@ -1,6 +1,6 @@
 Usage:
 
-    irma:remote REPO_NAME
+    irma:remote
 
 - create or update remote named "irma"
 - for the git repo found in current dir

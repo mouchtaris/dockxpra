@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "irma/$(_irma:get_project_name).git"
