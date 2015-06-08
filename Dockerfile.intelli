@@ -42,6 +42,8 @@ RUN pacman -S --noconfirm --needed xorg-server-xvfb
 RUN pacman -S --noconfirm --needed xterm
 RUN pkgfile --update
 
+ADD ideaIU-14.1.3.tar.gz /local/
+
 RUN true \
     && sed -r -i -e \
         's/^\s*#\s*XferCommand.*/XferCommand = aria2c -d\/ -j20 -c -x16 -o %o -s20 --file-allocation=falloc --no-conf -R %u/g' \
@@ -131,4 +133,3 @@ ENV EDITOR vim
 RUN printf 'nikos:2\n' | sudo chpasswd
 CMD sudo /usr/sbin/sshd -D -E /var/log/sshd.log
 
-ADD ideaIU-14.1.3.tar.gz /local/
