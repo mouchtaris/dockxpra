@@ -1,3 +1,10 @@
 #!/bin/bash
 
-echo "irma/$(_irma:get_project_name).git"
+if [[ $# < 1 ]]; then
+  project_name="$(_irma:get_project_name)"
+else
+  project_name="$1"
+  shift
+fi
+
+echo "irma/${project_name}.git"
