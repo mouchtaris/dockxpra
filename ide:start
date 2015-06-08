@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mydir="$( cd "$(dirname "$0")" && "$(/usr/bin/env pwd)" )"
+mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
 
 ide:ssh_hagrid docker rm -f ide_intelli
 ide:ssh_hagrid docker run --name ide_intelli -d -v /home/nikos/homes/ide:/home/nikos -ti -p 22 intelli
