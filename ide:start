@@ -1,15 +1,29 @@
 #!/bin/bash
 
 mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
+uid="$(id -u)"
+gid="$(id -g)"
 
 ide:ssh_hagrid docker rm -f ide_intelli
 ide:ssh_hagrid docker run --name ide_intelli -d -v /home/nikos/homes/ide:/home/nikos -ti -p 22 intelli
-tar --directory "$mydir" --create . |
-    ide:xdocker bash -c $(_shellescape \
-        'tar --directory ~ --extract ; ' \
-        'mkdir ~/.ssh' \
-        'ssh-keygen -t rsa -b 2048 ; ' \
-        'eval $(ssh-agent | tee .ssh/agent.bash) ; ' \
-        'ssh-add ; ' \
-        '~/_ssh_enable ide_intelli ; ' \
-        "xpra start ssh/nikos@hagrid.magodruidi.com:$(ide:port)/$(ide:display) --no-pulseaudio --start-child /home/nikos/xterm" )
+docker rm -f local_xpra
+ide:xdocker --name local_xpra -d -ti intelli sudo /usr/sbin/sshd -D -E /var/log/sshd.log
+tar --directory "$mydir" --create * --directory ~/.ssh troll_dsa \
+    | docker exec -i local_xpra bash -x -c "mkdir -pv ~/dockintelli && tar --directory ~/dockintelli --extract"
+docker exec -ti local_xpra bash -c ' true \
+    ;  sudo groupadd --gid '$(id -g)'  oto \
+    ;  sudo useradd --no-user-group --create-home --gid '$(id -g)' --uid '"$uid"' --groups sudo oto \
+    ;  true '
+docker:gen_user_sudo | docker exec -i local_xpra bash -c 'cat >~/sudo && chmod 700 -v ~/sudo'
+docker exec -ti local_xpra bash -c ' ~/sudo bash -x ~/dockintelli/skeletons/local_xpra/setup.bash '
+ssh-add -L \
+    | docker exec -i local_xpra bash -c ' true \
+        &&  tee -a ~/.ssh/authorized_keys \
+        |   ~/sudo bash -c "tee -a ~/.ssh/authorized_keys" \
+        && true '
+docker exec local_xpra xterm -bg black -fg pink -e bash -i -c ' true \
+    && printf '\''%s\n%s\n%s\n'\'' \
+         '\''set-option -g default-terminal screen-256color'\'' \
+         | tee /tmp/tmux.conf \
+    && ~/sudo bash -i -c '\''tmux -f /tmp/tmux.conf'\'' \
+    && true '

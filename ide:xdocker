@@ -1,3 +1,5 @@
 #!/bin/bash
 
-sudo docker run -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --rm -ti intelli $@
+sockdir="$(dirname "$SSH_AUTH_SOCK")"
+sock="$(basename "$SSH_AUTH_SOCK")"
+docker run -e DISPLAY=$DISPLAY -e SSH_AUTH_SOCK=/ssh-agent/$sock -v /tmp/.X11-unix:/tmp/.X11-unix -v $sockdir:/ssh-agent "$@"
