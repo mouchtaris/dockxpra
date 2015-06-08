@@ -5,4 +5,4 @@ shift
 port="$1"
 shift
 
-ide:ssh_hagrid docker port "$name" "$port" | sed -r -e 's/([[:digit:]]{1,3}\.){3}[[:digit:]]{1,3}:([[:digit:]]+).*/\2/'
+ide:ssh_hagrid docker port "$name" "$port" | _extract_port.sed
