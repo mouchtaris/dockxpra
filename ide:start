@@ -1,5 +1,15 @@
 #!/bin/bash
 
+mydir="$( cd "$(dirname "$0")" && "$(/usr/bin/env pwd)" )"
+
 ide:ssh_hagrid docker rm -f ide_intelli
 ide:ssh_hagrid docker run --name ide_intelli -d -v /home/nikos/homes/ide:/home/nikos -ti -p 22 intelli
-ide:xdocker xpra start ssh/nikos@hagrid.magodruidi.com:$(ide:port)/$(ide:display) --no-pulseaudio --start-child /home/nikos/xterm
+tar --directory "$mydir" --create . |
+    ide:xdocker bash -c $(_shellescape \
+        'tar --directory ~ --extract ; ' \
+        'mkdir ~/.ssh' \
+        'ssh-keygen -t rsa -b 2048 ; ' \
+        'eval $(ssh-agent | tee .ssh/agent.bash) ; ' \
+        'ssh-add ; ' \
+        '~/_ssh_enable ide_intelli ; ' \
+        "xpra start ssh/nikos@hagrid.magodruidi.com:$(ide:port)/$(ide:display) --no-pulseaudio --start-child /home/nikos/xterm" )
