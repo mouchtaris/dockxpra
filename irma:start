@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ide:ssh_hagrid bash -c "$(ruby -r shellwords -e 'ARGV.map(&Shellwords.method(:escape)).each(&method(:print))' \
+ssh $(<_hagrid_address) bash -c "$(_shellescape \
 	'docker rm -f -v irma irma_home &&' \
 	'docker run --name irma_home -d -v /home/nikos -ti intelli /bin/true' )"
-ide:ssh_hagrid docker run --name irma -d -v /home/nikos/homes/irma:/irma --volumes-from irma_home -ti -p 22 intelli
+ssh $(_hagrid_address) docker run --name irma -d -v /home/nikos/homes/irma:/irma --volumes-from irma_home -ti -p 22 intelli

@@ -4,8 +4,8 @@ mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
 uid="$(id -u)"
 gid="$(id -g)"
 
-ide:ssh_hagrid docker rm -f ide_intelli
-ide:ssh_hagrid docker run --name ide_intelli -d -v /home/nikos/homes/ide:/home/nikos -ti -p 22 intelli
+ssh $(<_hagrid_address) docker rm -f ide_intelli
+ssh $(<_hagrid_address) docker run --name ide_intelli -d -v /home/nikos/homes/ide:/home/nikos -ti -p 22 intelli
 docker rm -f local_xpra
 ide:xdocker --name local_xpra -d -ti intelli sudo /usr/sbin/sshd -D -E /var/log/sshd.log
 tar --directory "$mydir" --create * --directory ~/.ssh troll_dsa \

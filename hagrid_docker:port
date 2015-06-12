@@ -5,4 +5,4 @@ shift
 port="$1"
 shift
 
-ide:ssh_hagrid docker port "$name" "$port" | _extract_port.sed
+ssh $(<_hagrid_address) docker port "$name" "$port" | _extract_port.sed

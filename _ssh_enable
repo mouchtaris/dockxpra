@@ -10,6 +10,6 @@ home_container="$1"
 shift
 
 ssh-add -L |
-  ide:ssh_hagrid bash -c \
+  ssh $(<_hagrid_address) bash -c \
     "$(_shellescape \
     'docker run --rm -i --volumes-from '"$home_container"' intelli bash -c "mkdir -pv ~/.ssh && tee -a ~/.ssh/authorized_keys"' )"
