@@ -15,10 +15,11 @@ _print_args \
 tar --directory "$mydir" --create * \
     | docker exec -i local_xpra bash -x /tmp/script00.bash
 
-# ### ADDUSER oto
+### ADDUSER oto
 _print_args \
     'sudo groupadd --gid '"$gid"' oto' \
     'sudo useradd --no-user-group --create-home --gid '"$gid"' --uid '"$uid"' --groups sudo oto' \
+    "printf 'oto:2\n' | sudo chpasswd' \
     | docker exec -i local_xpra tee /tmp/script01.bash
 docker exec local_xpra bash -x /tmp/script01.bash
 
