@@ -6,10 +6,12 @@ if [[ $# < 1 ]];
   exit 1
 fi
 
+mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
+
 home_container="$1"
 shift
 
 ssh-add -L |
-  ssh $(<_hagrid_address) bash -c \
+  ssh $(<"$mydir"/_hagrid_address) bash -c \
     "$(_shellescape \
     'docker run --rm -i --volumes-from '"$home_container"' intelli bash -c "mkdir -pv ~/.ssh && tee -a ~/.ssh/authorized_keys"' )"

@@ -1,7 +1,9 @@
 #!/bin/bash
 
+mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
+
 irma_start_command="$(_shellescape \
 	'docker rm -f -v irma irma_home ;' \
 	'docker run --name irma_home -d -v /home/nikos -ti intelli /bin/true' )"
-ssh $(<_hagrid_address) bash -x -c "$irma_start_command"
-ssh $(<_hagrid_address) docker run --name irma -d -v /home/nikos/homes/irma:/irma --volumes-from irma_home -ti -p 22 intelli
+ssh $(<"$mydir"/_hagrid_address) bash -x -c "$irma_start_command"
+ssh $(<"$mydir"/_hagrid_address) docker run --name irma -d -v /home/nikos/homes/irma:/irma --volumes-from irma_home -ti -p 22 intelli

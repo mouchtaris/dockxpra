@@ -1,3 +1,5 @@
 #!/bin/bash
 
-ssh $(<_hagrid_address) -p $(irma:port) "$@"
+mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
+
+ssh $(<"$mydir"/_hagrid_address) -p $(irma:port) "$@"

@@ -1,8 +1,10 @@
 #!/bin/bash
 
+mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
+
 name="$1"
 shift
 port="$1"
 shift
 
-ssh $(<_hagrid_address) docker port "$name" "$port" | _extract_port.sed
+ssh $(<"$mydir"/_hagrid_address) docker port "$name" "$port" | _extract_port.sed
