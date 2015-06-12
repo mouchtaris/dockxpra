@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker exec -ti local_xpra /home/nikos/sudo ssh nikos@$(_hagrid_address) -t -p $(ide:port) "$@"
+docker exec -ti local_xpra /home/nikos/sudo ssh nikos@$(<_hagrid_address) -t -p $(ide:port) "$@"
