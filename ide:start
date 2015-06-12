@@ -9,7 +9,7 @@ ssh $(<_hagrid_address) docker run --name ide_intelli -d -v /home/nikos/homes/id
 docker rm -f local_xpra
 ide:xdocker --name local_xpra -d -ti intelli sudo /usr/sbin/sshd -D -E /var/log/sshd.log
 tar --directory "$mydir" --create * --directory ~/.ssh troll_dsa \
-    | docker exec -i local_xpra bash -x -c "mkdir -pv ~/dockintelli && tar --directory ~/dockintelli --extract"
+    | docker exec -i local_xpra bash -x -c "$(_shellescape 'mkdir -pv ~/dockintelli && tar --directory ~/dockintelli --extract')"
 docker exec -ti local_xpra bash -c ' true \
     ;  sudo groupadd --gid '$(id -g)'  oto \
     ;  sudo useradd --no-user-group --create-home --gid '$(id -g)' --uid '"$uid"' --groups sudo oto \
