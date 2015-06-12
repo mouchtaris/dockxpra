@@ -4,5 +4,4 @@ require 'shellwords'
 
 ARGV.each do |arg|
   print Shellwords.escape(arg)
-  print ' '
 end
