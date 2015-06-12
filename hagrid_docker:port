@@ -7,4 +7,4 @@ shift
 port="$1"
 shift
 
-ssh $(<"$mydir"/_hagrid_address) docker port "$name" "$port" | _extract_port.sed
+ssh nikos@$(<"$mydir"/_hagrid_address) docker port "$name" "$port" | _extract_port.sed

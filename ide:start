@@ -2,5 +2,5 @@
 
 mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
 
-ssh $(<"$mydir"/_hagrid_address) docker rm -f ide_intelli
-ssh $(<"$mydir"/_hagrid_address) docker run --name ide_intelli -d -v /home/nikos/homes/ide:/home/nikos -ti -p 22 intelli
+ssh nikos@$(<"$mydir"/_hagrid_address) docker rm -f ide_intelli
+ssh nikos@$(<"$mydir"/_hagrid_address) docker run --name ide_intelli -d -v /home/nikos/homes/ide:/home/nikos -ti -p 22 intelli

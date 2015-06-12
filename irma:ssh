@@ -2,4 +2,4 @@
 
 mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
 
-ssh $(<"$mydir"/_hagrid_address) -p $(irma:port) "$@"
+ssh nikos@$(<"$mydir"/_hagrid_address) -p $(irma:port) "$@"
