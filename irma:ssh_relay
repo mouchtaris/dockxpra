@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
+export PATH="$mydir":"$PATH"
+
+ssh -p $(irma:port) "$@"
