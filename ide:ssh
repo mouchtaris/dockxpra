@@ -1,5 +1,6 @@
 #!/bin/bash
 
 mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
+export PATH="$mydir":"$PATH"
 
-docker exec -ti local_xpra /home/nikos/sudo ssh nikos@$(<"$mydir"/_hagrid_address) -t -p $(ide:port) "$@"
+docker exec -ti local_xpra /home/nikos/sudo ssh nikos@$(resolv:hagrid) -t -p $(ide:port) "$@"

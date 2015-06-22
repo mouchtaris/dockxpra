@@ -1,10 +1,11 @@
 #!/bin/bash
 
 mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
+export PATH="$mydir":"$PATH"
 
 name="$1"
 shift
 port="$1"
 shift
 
-ssh nikos@$(<"$mydir"/_hagrid_address) docker port "$name" "$port" | _extract_port.sed
+ssh nikos@$(resolv:hagrid) docker port "$name" "$port" | _extract_port.sed

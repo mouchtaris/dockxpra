@@ -3,7 +3,7 @@
 mydir="$(cd "$(dirname "$0")" && /usr/bin/env pwd)"
 export PATH="$mydir":"$PATH"
 
-address="ssh://nikos@$(<"$mydir"/_hagrid_address):$(irma:port)/$(_irma:get_repo_address)"
+address="ssh://nikos@$(resolv:hagrid):$(irma:port)/$(_irma:get_repo_address)"
 
 if git remote | grep -E -e '^irma$'
 then
