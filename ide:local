@@ -4,53 +4,54 @@ mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
 uid="$(id -u)"
 gid="$(id -g)"
 
+DOCKER_USER=nikos
 
 docker rm -f local_xpra
-ide:xdocker --name local_xpra -d -ti intelli sudo /usr/sbin/sshd -D -E /var/log/sshd.log
+ide:xdocker --name local_xpra -d -ti -u $DOCKER_USER intelli sudo /usr/sbin/sshd -D -E /var/log/sshd.log
 
 ### ADD dockintelli ~/
 _print_args \
     'mkdir -pv ~/dockintelli && tar --directory ~/dockintelli --extract' \
-    | docker exec -i local_xpra tee /tmp/script00.bash
+    | docker exec -i -u $DOCKER_USER local_xpra tee /tmp/script00.bash
 tar --directory "$mydir" --create * \
-    | docker exec -i local_xpra bash -x /tmp/script00.bash
+    | docker exec -i -u $DOCKER_USER local_xpra bash -x /tmp/script00.bash
 
 ### ADDUSER oto
 _print_args \
     'sudo groupadd --gid '"$gid"' oto' \
     'sudo useradd --no-user-group --create-home --gid '"$gid"' --uid '"$uid"' --groups sudo,wheel oto' \
-    | docker exec -i local_xpra tee /tmp/script01.bash
-docker exec local_xpra bash -x /tmp/script01.bash
+    | docker exec -i -u $DOCKER_USER local_xpra tee /tmp/script01.bash
+docker exec -u $DOCKER_USER local_xpra bash -x /tmp/script01.bash
 
 ### Install ~/sudo
 _print_args \
     'tee ~/sudo && chmod 700 -v ~/sudo' \
-    | docker exec -i local_xpra tee /tmp/script02.bash
-docker:gen_user_sudo | docker exec -i local_xpra bash -x /tmp/script02.bash
+    | docker exec -i -u $DOCKER_USER local_xpra tee /tmp/script02.bash
+docker:gen_user_sudo | docker exec -i -u $DOCKER_USER local_xpra bash -x /tmp/script02.bash
 
 ### Run Setup
 _print_args \
     '~/sudo bash -x ~/dockintelli/skeletons/local_xpra/setup.bash' \
-    | docker exec -i local_xpra tee /tmp/script03.bash
-docker exec -ti local_xpra bash -x /tmp/script03.bash
+    | docker exec -i -u $DOCKER_USER local_xpra tee /tmp/script03.bash
+docker exec -ti -u $DOCKER_USER local_xpra bash -x /tmp/script03.bash
 
 ### Install ssh-keys
 _print_args \
     '  mkdir ~/.ssh && ~/sudo bash -c "mkdir -pv ~/.ssh"' \
     '  tee -a ~/.ssh/authorized_keys \' \
     '| ~/sudo bash -c "tee -a ~/.ssh/authorized_keys"' \
-    | docker exec -i local_xpra tee /tmp/script04.bash
+    | docker exec -i -u $DOCKER_USER local_xpra tee /tmp/script04.bash
 ssh-add -L \
-    | docker exec -i local_xpra bash -x /tmp/script04.bash
+    | docker exec -i -u $DOCKER_USER local_xpra bash -x /tmp/script04.bash
 
 ### Run xterm
 _print_args \
     'set-option -g default-terminal screen-256color' \
-    | docker exec -i local_xpra tee /tmp/tmux.conf
+    | docker exec -i -u $DOCKER_USER local_xpra tee /tmp/tmux.conf
 _print_args \
     '~/sudo bash -i -c '"$(_shellescape 'tmux -f /tmp/tmux.conf')" \
-    | docker exec -i local_xpra tee /tmp/xterm_startup.bash
+    | docker exec -i -u $DOCKER_USER local_xpra tee /tmp/xterm_startup.bash
 _print_args \
     'xterm -bg black -fg pink -e bash -i /tmp/xterm_startup.bash' \
-    | docker exec -i local_xpra tee /tmp/script05.bash
-docker exec local_xpra bash -x /tmp/script05.bash
+    | docker exec -i -u $DOCKER_USER local_xpra tee /tmp/script05.bash
+docker exec -u $DOCKER_USER local_xpra bash -x /tmp/script05.bash
