@@ -12,4 +12,4 @@ else
   git remote add irma "$address"
 fi
 
-_ssh_enable irma_home
+_ssh_enable irma
