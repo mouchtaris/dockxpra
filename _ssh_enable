@@ -14,4 +14,4 @@ shift
 ssh-add -L |
   ssh nikos@$(resolv:hagrid) bash -c \
     "$(_shellescape \
-    'docker run --rm -i --volumes-from '"$home_container"' intelli bash -c "mkdir -pv ~/.ssh && tee -a ~/.ssh/authorized_keys"' )"
+    'docker exec -u nikos -i '"$home_container"' bash -c "mkdir -pv ~/.ssh && tee -a ~/.ssh/authorized_keys"' )"
