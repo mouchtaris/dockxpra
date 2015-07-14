@@ -3,5 +3,7 @@
 mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
 export PATH="$mydir":"$PATH"
 
-ssh nikos@$(resolv:hagrid) docker rm -f ide_intelli
-ssh nikos@$(resolv:hagrid) docker run --name ide_intelli -d -v /home/nikos/homes/ide:/home/nikos -ti -p 22 intelli
+ide_start_command="$(_shellescape \
+	'docker rm -f ide_intelli ; ' \
+	'docker run --name ide_intelli -d -v /home/nikos/homes/ide:/home/nikos -ti -p 22 --hostname ide intelli ; ' )"
+ssh nikos@$(resolv:hagrid) bash -x -c "$ide_start_command"

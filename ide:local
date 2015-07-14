@@ -7,7 +7,7 @@ gid="$(id -g)"
 DOCKER_USER=nikos
 
 docker rm -f local_xpra
-ide:xdocker --name local_xpra -d -ti -u $DOCKER_USER intelli sudo /usr/sbin/sshd -D -E /var/log/sshd.log
+ide:xdocker --name local_xpra --hostname local_xpra -d -ti -u $DOCKER_USER intelli sudo /usr/sbin/sshd -D -E /var/log/sshd.log
 
 ### ADD dockintelli ~/
 _print_args \
