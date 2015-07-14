@@ -10,6 +10,7 @@ RUN true \
     && true
 
 RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed
+RUN pacman -S --noconfirm --needed awesome
 RUN pacman -S --noconfirm --needed base
 RUN pacman -S --noconfirm --needed base-devel
 RUN pacman -S --noconfirm --needed darkhttpd
@@ -21,10 +22,10 @@ RUN pacman -S --noconfirm --needed git
 RUN pacman -S --noconfirm --needed haveged
 RUN pacman -S --noconfirm --needed htop
 RUN pacman -S --noconfirm --needed jdk8-openjdk
-RUN pacman -S --noconfirm --needed openjdk8-src
 RUN pacman -S --noconfirm --needed libwebp
 RUN pacman -S --noconfirm --needed libxtst
 RUN pacman -S --noconfirm --needed maven
+RUN pacman -S --noconfirm --needed openjdk8-src
 RUN pacman -S --noconfirm --needed openssh
 RUN pacman -S --noconfirm --needed pkgfile
 RUN pacman -S --noconfirm --needed pulseaudio
@@ -40,7 +41,9 @@ RUN pacman -S --noconfirm --needed tmux
 RUN pacman -S --noconfirm --needed vim
 RUN pacman -S --noconfirm --needed x264
 RUN pacman -S --noconfirm --needed xclip
+RUN pacman -S --noconfirm --needed Xephyr
 RUN pacman -S --noconfirm --needed xf86-video-dummy
+RUN pacman -S --noconfirm --needed xfce4
 RUN pacman -S --noconfirm --needed xorg
 RUN pacman -S --noconfirm --needed xorg-server-xvfb
 RUN pacman -S --noconfirm --needed xterm
