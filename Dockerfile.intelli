@@ -13,12 +13,15 @@ RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
     awesome \
     base \
     base-devel \
+    ctags \
     darkhttpd \
     dnsutils \
     ffmpeg \
     firefox \
     fish \
     git \
+    gkrellm \
+    gvim \
     haveged \
     htop \
     jdk8-openjdk \
@@ -37,8 +40,8 @@ RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
     sbt \
     sudo \
     svn \
+    terminology \
     tmux \
-    vim \
     x264 \
     xclip \
     xf86-video-dummy \
