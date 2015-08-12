@@ -70,8 +70,8 @@ USER nikos
 WORKDIR /local/nikos
 
 RUN mkdir -pv /local/nikos/aur
-RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/packages/xp/xpra-winswitch/xpra-winswitch.tar.gz
-RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/packages/py/python2-lz4/python2-lz4.tar.gz
+RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/xpra-winswitch.tar.gz
+RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/python2-lz4.tar.gz
 RUN true \
     &&  { true \
         && printf '%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
