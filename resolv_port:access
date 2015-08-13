@@ -1,0 +1,3 @@
+#!/bin/bash
+
+hagrid_docker:port access 22/tcp
