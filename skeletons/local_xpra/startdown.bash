@@ -6,5 +6,5 @@ export PATH="$mydir":"$PATH"
 true \
 && export PATH="/home/nikos/dockintelli:$PATH" \
 && _ssh_enable ide_intelli \
-&& xpra attach ssh/nikos@$(resolv:hagrid):$(ide:port)/$(ide:display) \
+&& xpra attach ssh/nikos@$(resolv:hagrid):$(resolv_port:ide)/$(ide:display) \
 && true

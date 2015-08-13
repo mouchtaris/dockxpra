@@ -3,4 +3,4 @@
 mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
 export PATH="$mydir":"$PATH"
 
-docker exec -ti local_xpra /home/nikos/sudo ssh nikos@$(resolv:hagrid) -t -p $(ide:port) "$@"
+docker exec -ti local_xpra /home/nikos/sudo ssh nikos@$(resolv:hagrid) -t -p $(resolv_port:ide) "$@"
