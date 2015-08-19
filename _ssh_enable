@@ -12,6 +12,6 @@ home_container="$1"
 shift
 
 ssh-add -L |
-  ssh nikos@$(resolv:hagrid) bash -c \
+  _ssh_nocheck nikos@$(resolv:hagrid) bash -c \
     "$(_shellescape \
     'docker exec -u nikos -i '"$home_container"' bash -c "mkdir -pv ~/.ssh && tee -a ~/.ssh/authorized_keys"' )"
