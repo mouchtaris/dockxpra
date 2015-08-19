@@ -6,4 +6,4 @@ irma_start_command="$(_shellescape \
 	'docker rm -f -v irma irma_home ; ' \
 	'docker run --name irma_home -d -v /home/nikos -ti intelli /bin/true ; ' \
 	'docker run --name irma -d -v /home/nikos/homes/irma:/irma --volumes-from irma_home -ti -p 22 intelli ; ' )"
-ssh nikos@$(resolv:hagrid) bash -x -c "$irma_start_command"
+_ssh_nocheck nikos@$(resolv:hagrid) bash -x -c "$irma_start_command"

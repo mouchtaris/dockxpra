@@ -8,4 +8,4 @@ shift
 port="$1"
 shift
 
-ssh nikos@$(resolv:hagrid) docker port "$name" "$port" | _extract_port.sed
+_ssh_nocheck nikos@$(resolv:hagrid) docker port "$name" "$port" | _extract_port.sed
