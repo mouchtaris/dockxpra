@@ -6,4 +6,4 @@ export PATH="$mydir":"$PATH"
 argport="$1"; shift
 argrport="$1"; shift
 argcontainer="$1"; shift
-bash -x -c "$(ruby socks_proxy.rb "$argport" "$argrport" "$argcontainer")"
+bash -c "$(ruby "$mydir"/socks_proxy.rb "$argport" "$argrport" "$argcontainer")"
