@@ -1,0 +1,9 @@
+#!/bin/bash
+
+mydir="$(cd "$(dirname "$0")" && /usr/bin/env pwd)"
+export PATH="$mydir":"$PATH"
+
+argport="$1"; shift
+argrport="$1"; shift
+argcontainer="$1"; shift
+bash -x -c "$(ruby socks_proxy.rb "$argport" "$argrport" "$argcontainer")"
