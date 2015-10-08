@@ -19,7 +19,9 @@ def container_ip_command(container)
   %Q{docker inspect -f '{{.NetworkSettings.IPAddress}}' #{container}}
 end
 
-hagrid_internal_ip_command = %Q{gcloud compute instances list --format=yaml -r hagrid | ruby -r yaml -e 'puts YAML.load(STDIN.read)["networkInterfaces"].first["networkIP"]'}
-hagrid_command = %Q{ssh -D "$(#{hagrid_internal_ip_command})":#{rport} -N "$(#{container_ip_command(container)})"}
-local_command = %Q{_ssh_enable #{container}; ssh -A -L #{lport}:localhost:#{rport} "$(resolv:hagrid)" bash -c #{es es hagrid_command}}
+hagrid_internal_ip_command =
+  %Q{echo 0.0.0.0}
+  # %Q{gcloud compute instances list --format=yaml -r hagrid | ruby -r yaml -e 'puts YAML.load(STDIN.read)["networkInterfaces"].first["networkIP"]'}
+hagrid_command = %Q{ssh -D "$(#{hagrid_internal_ip_command})":#{rport} "$(#{container_ip_command(container)})"}
+local_command = %Q{_ssh_enable #{container}; ssh -A -L #{lport}:localhost:#{rport} "$(resolv:hagrid)" bash -x -c #{es es hagrid_command}}
 puts local_command
