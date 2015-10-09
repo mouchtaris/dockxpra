@@ -54,6 +54,7 @@ RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
 RUN pkgfile --update
 
 ADD ideaIU-14.1.4.tar.gz /local/
+COPY svn-migration-scripts.jar /local/
 
 RUN true \
     && sed -r -i -e \
