@@ -1,3 +1,9 @@
 #!/bin/bash
 
-basename "$(/usr/bin/env pwd)"
+if [ -n "$1" ]; then
+  printf '%s\b' "$1"
+elif [ -f '.reponame' ]; then
+  cat .reponame
+else
+  basename "$(/usr/bin/env pwd)"
+fi
