@@ -1,5 +1,5 @@
 # vim: et ts=4 sw=4
-FROM l3iggs/archlinux
+FROM dock0/arch
 MAINTAINER Nikos Mouchtaris <nikos@azavista.com>
 
 RUN true \
@@ -60,9 +60,9 @@ RUN true \
     && sed -r -i -e \
         's/^\s*#\s*XferCommand.*/XferCommand = aria2c -d\/ -j20 -c -x16 -o %o -s20 --file-allocation=falloc --no-conf -R %u/g' \
         /etc/pacman.conf \
-    && groupadd sudo \
-    && groupadd --gid 1001 nikos \
-    && useradd -G sudo,wheel --no-create-home --uid 1001 --gid 1001 nikos \
+    && groupadd --gid 2000 sudo \
+    && groupadd --gid 1000 nikos \
+    && useradd -G sudo,wheel --no-create-home --uid 1000 --gid 1000 nikos \
     && mkdir -pv /local/nikos /home/nikos \
     && chown -Rv nikos:nikos /local/nikos /home/nikos \
     && sed -i -r -e 's/.*\%wheel\s+ALL=\(ALL\).*/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers \
