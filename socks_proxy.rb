@@ -24,11 +24,11 @@ hagrid_internal_ip_command =
   # %Q{gcloud compute instances list --format=yaml -r hagrid | ruby -r yaml -e 'puts YAML.load(STDIN.read)["networkInterfaces"].first["networkIP"]'}
 hagrid_command = %Q{
   export PATH=$HOME/tmp/dockintelli:"$PATH";
-  which _ssh_enable;
-  _ssh_enable #{container};
+  hagrid_internal_ip="$(#{hagrid_internal_ip_command})"
+  container_ip="$(#{container_ip_command container})"
   _ssh_nocheck -A -D \
-      "$(#{hagrid_internal_ip_command})":#{rport} \
-      "$(#{container_ip_command(container)})" \
+      "$hagrid_internal_ip":#{rport} \
+      "$container_ip" \
       'while [ 1 ] ; do sleep 1 ; date ; done ' ;
   }
 local_command = %Q{_ssh_enable #{container}; ssh -A -L #{lport}:localhost:#{rport} "$(resolv:hagrid)" bash -x -c #{es es hagrid_command}}
