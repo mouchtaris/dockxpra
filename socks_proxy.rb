@@ -29,7 +29,7 @@ hagrid_command = %Q{
   _ssh_nocheck -A -D \
       "$hagrid_internal_ip":#{rport} \
       "$container_ip" \
-      'while [ 1 ] ; do sleep 1 ; date ; done ' ;
+      'while [ 1 ] ; do sleep 1 ; printf '%s\r' "$(date)" ; done ' ;
   }
 local_command = %Q{_ssh_enable #{container}; ssh -A -L #{lport}:localhost:#{rport} "$(resolv:hagrid)" bash -x -c #{es es hagrid_command}}
 puts local_command
