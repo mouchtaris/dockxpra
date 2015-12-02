@@ -13,6 +13,8 @@ RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
     awesome \
     base \
     base-devel \
+    boost \
+    clang \
     ctags \
     darkhttpd \
     dnsutils \
@@ -33,6 +35,7 @@ RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
     parallel \
     pkgfile \
     pulseaudio \
+    pv \
     pygtk \
     python \
     python2 \
