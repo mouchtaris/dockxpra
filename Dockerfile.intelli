@@ -140,6 +140,13 @@ RUN true \
     && true \
     && true \
     && sudo sed -i -r -e 's/^\s*#\s*(Color)\s*$/\1/' /etc/pacman.conf \
+    && true \
+    && true \
+    && { true \
+        && sudo /local/nikos/make_script /etc/X11/Xwrapper.config \
+            'allowed_users=anybody' \
+            'needs_root_rights=no' \
+        ; } \
     && true
 
 ENV _JAVA_OPTIONS -Dawt.useSystemAAFontSettings=lcd
