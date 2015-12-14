@@ -4,7 +4,7 @@ MAINTAINER Nikos Mouchtaris <nikos@azavista.com>
 
 RUN true \
     && printf '%s\n' \
-            'Server = http://leon.mirror/os/Linux/distr/archlinux/$repo/os/$arch' \
+            'Server = http://leon.arch/os/Linux/distr/archlinux/$repo/os/$arch' \
         | tee /etc/pacman.d/mirrorlist \
     && pacman -Syu --noconfirm --needed aria2 sudo \
     && true
