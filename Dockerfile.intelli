@@ -1,10 +1,10 @@
 # vim: et ts=4 sw=4
 FROM dock0/arch
-MAINTAINER Nikos Mouchtaris <nikos@azavista.com>
+MAINTAINER Nikos Mouchtaris <nikos@mouchtaris.com>
 
 RUN true \
     && printf '%s\n' \
-            'Server = http://leon.arch/os/Linux/distr/archlinux/$repo/os/$arch' \
+            'Server = http://172.17.4.168:9000/os/Linux/distr/archlinux/$repo/os/$arch' \
         | tee /etc/pacman.d/mirrorlist \
     && pacman -Syu --noconfirm --needed aria2 sudo \
     && true
