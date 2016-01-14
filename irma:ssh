@@ -3,4 +3,4 @@
 mydir="$( cd "$(dirname "$0")" && /usr/bin/env pwd )"
 export PATH="$mydir":"$PATH"
 
-ssh nikos@$(resolv:hagrid) -p $(irma:port) "$@"
+ssh $(_hagrid_user)@$(resolv:hagrid) -p $(irma:port) "$@"
