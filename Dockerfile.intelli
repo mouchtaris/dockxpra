@@ -58,6 +58,8 @@ RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
 RUN pkgfile --update
 
 ADD ideaIU-15.0.3.tar.gz /local/
+ADD clion-1.2.4.tar.gz /local/
+ADD RubyMine-8.0.3.tar.gz /local/
 COPY svn-migration-scripts.jar /local/
 
 RUN true \
