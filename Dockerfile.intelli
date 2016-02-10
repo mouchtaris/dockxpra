@@ -4,7 +4,7 @@ MAINTAINER Nikos Mouchtaris <nikos@mouchtaris.com>
 
 RUN true \
     && printf '%s\n' \
-            'Server = http://localhost:34000/os/Linux/distr/archlinux/$repo/os/$arch' \
+            'Server = http://ria.infra.blue:34000/os/Linux/distr/archlinux/$repo/os/$arch' \
         | tee /etc/pacman.d/mirrorlist \
     && pacman -Syu --noconfirm --needed aria2 sudo \
     && true
