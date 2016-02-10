@@ -41,6 +41,7 @@ RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
     python2 \
     python2-imaging \
     rsync \
+    ruby \
     sbt \
     sudo \
     svn \
