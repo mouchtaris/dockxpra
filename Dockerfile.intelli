@@ -1,15 +1,19 @@
 # vim: et ts=4 sw=4
-FROM dock0/arch
+FROM base/archlinux
 MAINTAINER Nikos Mouchtaris <nikos@mouchtaris.com>
 
 RUN true \
     && printf '%s\n' \
-            'Server = http://ria.infra.blue:34000/os/Linux/distr/archlinux/$repo/os/$arch' \
+            'Server = ARCH_MIRROR_PACACHE/$repo/os/$arch' \
         | tee /etc/pacman.d/mirrorlist \
-    && pacman -Syu --noconfirm --needed aria2 sudo \
+    && pacman --noconfirm --needed -Sy \
+    && pacman --noconfirm --needed -S archlinux-keyring \
+    && pacman --noconfirm --needed -Su pacman \
+    && pacman-db-upgrade \
     && true
 
-RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
+RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -S \
+    aria2 \
     awesome \
     base \
     base-devel \
@@ -44,6 +48,7 @@ RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
     ruby \
     sbt \
     sudo \
+    sudo \
     svn \
     terminology \
     tmux \
@@ -55,7 +60,7 @@ RUN pacman -Ssq ttf- | xargs sudo pacman -S --noconfirm --needed \
     xorg-server-xephyr \
     xorg-server-xvfb \
     xterm \
-    ; true
+    && true
 RUN pkgfile --update
 
 ADD ideaIU-15.0.3.tar.gz /local/
