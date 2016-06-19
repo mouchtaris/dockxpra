@@ -4,7 +4,7 @@ MAINTAINER Nikos Mouchtaris <nikos@mouchtaris.com>
 
 RUN true \
     && printf '%s\n' \
-            'Server = ARCH_MIRROR_PACACHE/$repo/os/$arch' \
+            'Server = http://172.17.0.1:9000/$repo/os/$arch' \
         | tee /etc/pacman.d/mirrorlist \
     && pacman --noconfirm --needed -Sy \
     && pacman --noconfirm --needed -S archlinux-keyring \
