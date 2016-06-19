@@ -156,6 +156,9 @@ ENV _JAVA_OPTIONS -Dawt.useSystemAAFontSettings=lcd
 ENV JAVA_FONTS /usr/share/fonts/TTF/
 ENV EDITOR vim
 
-RUN printf 'nikos:2\n' | sudo chpasswd
+RUN true \
+    && printf 'nikos:2\n' | sudo chpasswd \
+    && printf '%s = %s\n' 'Server' 'http://leon:9000/$repo/os/$arch' | sudo tee /etc/pacmand.d/mirrorlist \
+    && true
 CMD sudo /usr/sbin/sshd -D -E /var/log/sshd.log
 
