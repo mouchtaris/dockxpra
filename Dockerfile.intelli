@@ -54,6 +54,7 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -S \
     svn \
     terminology \
     tmux \
+    unzip \
     x264 \
     xclip \
     xf86-video-dummy \
