@@ -67,9 +67,6 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -S \
 RUN pkgfile --update
 
 RUN true \
-    && sed -r -i -e \
-        's/^\s*#\s*XferCommand.*/XferCommand = aria2c -d\/ -j20 -c -x16 -o %o -s20 --file-allocation=falloc --no-conf -R %u/g' \
-        /etc/pacman.conf \
     && groupadd --gid 2000 sudo \
     && groupadd --gid 1000 nikos \
     && useradd -G sudo,wheel --no-create-home --uid 1000 --gid 1000 nikos \
