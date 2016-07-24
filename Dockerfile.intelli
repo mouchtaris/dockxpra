@@ -158,7 +158,7 @@ ENV EDITOR vim
 
 RUN true \
     && printf 'nikos:2\n' | sudo chpasswd \
-    && printf '%s = %s\n' 'Server' 'http://leon:9000/$repo/os/$arch' | sudo tee /etc/pacmand.d/mirrorlist \
+    && printf '%s = %s\n' 'Server' 'http://leon:9000/arch/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist \
     && true
 CMD sudo /usr/sbin/sshd -D -E /var/log/sshd.log
 
