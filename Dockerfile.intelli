@@ -72,6 +72,7 @@ RUN pkgfile --update
 RUN true \
     && groupadd --gid 2000 sudo \
     && groupadd --gid 1000 nikos \
+    && groupmod --gid 1600 docker \
     && useradd -G sudo,wheel,docker --no-create-home --uid 1000 --gid 1000 nikos \
     && mkdir -pv /local/nikos /home/nikos \
     && chown -Rv nikos:nikos /local/nikos /home/nikos \
