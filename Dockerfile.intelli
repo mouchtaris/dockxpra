@@ -8,16 +8,18 @@ RUN true \
         | tee /etc/pacman.d/mirrorlist \
     && pacman --noconfirm --needed -Sy \
     && pacman --noconfirm --needed -S archlinux-keyring \
-    && pacman --noconfirm --needed -Su pacman \
+    && pacman --noconfirm --needed -S pacman \
     && pacman-db-upgrade \
     && true
 
-RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -S \
+RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -Su \
     aria2 \
+    atom \
     awesome \
     base \
     base-devel \
     boost \
+    cargo \
     clang \
     ctags \
     darkhttpd \
@@ -36,7 +38,9 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -S \
     libwebp \
     libxtst \
     maven \
+    mono \
     netcat \
+    npm \
     openjdk8-src \
     openssh \
     parallel \
@@ -50,13 +54,13 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -S \
     python2-imaging \
     rsync \
     ruby \
+    rust \
     sbt \
-    sudo \
     sudo \
     svn \
     terminology \
     tmux \
-    unzip \
+    typescript \
     unzip \
     x264 \
     xclip \
