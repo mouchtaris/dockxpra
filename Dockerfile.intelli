@@ -21,25 +21,34 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -Su \
     boost \
     cargo \
     clang \
+    cmake \
     ctags \
     darkhttpd \
     dnsutils \
     docker \
+    docker-compose \
     ffmpeg \
     firefox \
     fish \
+    gconf \
+    gdb \
     git \
     gkrellm \
     go \
+    graphicsmagick \
     gvim \
     haveged \
     htop \
+    imagemagick \
+    irssi \
     jdk8-openjdk \
+    jruby \
     libwebp \
     libxtst \
     maven \
     mono \
     netcat \
+    ninja \
     npm \
     openjdk8-src \
     openssh \
@@ -52,6 +61,7 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -Su \
     python \
     python2 \
     python2-imaging \
+    python-pip \
     rsync \
     ruby \
     rust \
@@ -62,6 +72,8 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -Su \
     tmux \
     typescript \
     unzip \
+    wget \
+    wireshark-qt \
     x264 \
     xclip \
     xf86-video-dummy \
@@ -88,6 +100,8 @@ WORKDIR /local/nikos
 RUN mkdir -pv /local/nikos/aur
 RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/xpra-winswitch.tar.gz
 RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/python2-lz4.tar.gz
+RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz
+RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/rubymine.tar.gz
 RUN true \
     &&  { true \
         && printf '%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
@@ -133,8 +147,10 @@ RUN true \
         ; } \
     && true
 RUN true \
-    && /local/nikos/aur_install python2-lz4 \
-    && /local/nikos/aur_install xpra-winswitch \
+#     && /local/nikos/aur_install python2-lz4 \
+#     && /local/nikos/aur_install xpra-winswitch \
+    && /local/nikos/aur_install yarn \
+    && /local/nikos/aur_install rubymine \
     && true
 RUN true \
     && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
