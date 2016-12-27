@@ -103,6 +103,7 @@ RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapsho
 RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/python2-lz4.tar.gz
 RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz
 RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/rubymine.tar.gz
+RUN aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/terraform-bin.tar.gz
 RUN true \
     &&  { true \
         && printf '%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
@@ -152,6 +153,7 @@ RUN true \
 #     && /local/nikos/aur_install xpra-winswitch \
     && /local/nikos/aur_install yarn \
     && /local/nikos/aur_install rubymine \
+    && /local/nikos/aur_install terraform-bin \
     && true
 RUN true \
     && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
