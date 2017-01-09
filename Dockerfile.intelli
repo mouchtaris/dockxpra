@@ -108,6 +108,7 @@ RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/terraform-bin.tar.gz \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/webstorm.tar.gz \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/clion.tar.gz \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/packer-io.tar.gz \
     && true
 RUN true \
     &&  { true \
@@ -161,6 +162,7 @@ RUN true \
     && /local/nikos/aur_install terraform-bin \
     && /local/nikos/aur_install webstorm \
     && /local/nikos/aur_install clion \
+    && /local/nikos/aur_install packer-io \
     && true
 RUN true \
     && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
