@@ -181,7 +181,7 @@ RUN true \
             '{' \
             '    cd /local/nikos/packages/"$package" &&' \
             '    ./configure &&' \
-            '    make install &&' \
+            '    make -j 4 install &&' \
             '   true' \
             '}' \
         ; } \
