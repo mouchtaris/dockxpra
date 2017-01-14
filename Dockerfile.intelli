@@ -168,7 +168,7 @@ RUN true \
             '    sync &&' \
             '    sudo ./pacman_for_dockers --upgrade $package-*.tar.xz &&' \
             '    cd ../../.. &&' \
-            '    rm -rv tmp &&' \
+            '    rm -r tmp &&' \
             '    true' \
             '}' \
         ; } \
