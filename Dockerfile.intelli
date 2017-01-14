@@ -92,7 +92,9 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -Su \
     xorg-server-xephyr \
     xorg-server-xvfb \
     xterm \
-    && pkgfile --update
+    && pkgfile --update \
+    && paccache --remove --uninstalled --keep 0 \
+    && true
 
 RUN true \
     && groupadd --gid 2000 sudo \
