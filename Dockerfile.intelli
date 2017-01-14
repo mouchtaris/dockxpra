@@ -192,11 +192,12 @@ RUN true \
             'package="$1" ' \
             'remote="$2"' \
             'commit="$3"' \
+            'recursive="$4"' \
             '' \
             'target=/local/nikos/packages/"$package"' \
             '' \
             '{ true \' \
-            '    && git clone --recursive -- "$remote" "$target" \' \
+            '    && git clone $recursive -- "$remote" "$target" \' \
             '    && git -C "$target" checkout "$commit" -- . \' \
             ';}' \
         ; } \
