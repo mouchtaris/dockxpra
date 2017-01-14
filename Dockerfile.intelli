@@ -126,13 +126,6 @@ RUN true \
     && sudo sed -i -r -e 's/^\s*#\s*(Color)\s*$/\1/' /etc/pacman.conf \
     && true \
     && true \
-    && { true \
-        && sudo /local/nikos/make_script /etc/X11/Xwrapper.config \
-            'allowed_users=anybody' \
-            'needs_root_rights=no' \
-        ; } \
-    && true \
-    && true \
     && printf 'nikos:2\n' | sudo chpasswd \
     && printf '%s = %s\n' 'Server' 'http://leon:9000/arch/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist \
     && true \
@@ -219,6 +212,13 @@ RUN true \
             '    && /local/nikos/fetch_git_package "$package" "$remote" "$commit" \' \
             '    && /local/nikos/config_install "$package" \' \
             ';}' \
+        ; } \
+    && true \
+    && true \
+    && { true \
+        && sudo /local/nikos/make_script /etc/X11/Xwrapper.config \
+            'allowed_users=anybody' \
+            'needs_root_rights=no' \
         ; } \
     && true \
     && true \
