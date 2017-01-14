@@ -2,6 +2,13 @@
 FROM base/archlinux
 MAINTAINER Nikos Mouchtaris <nikos@mouchtaris.com>
 
+
+ENV _JAVA_OPTIONS -Dawt.useSystemAAFontSettings=lcd
+ENV JAVA_FONTS /usr/share/fonts/TTF/
+ENV EDITOR vim
+CMD sudo /usr/sbin/sshd -D -E /var/log/sshd.log
+WORKDIR /local/nikos
+
 RUN true \
     && printf '%s\n' \
             'Server = http://172.17.0.1:9000/arch/$repo/os/$arch' \
@@ -84,8 +91,7 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -Su \
     xorg-server-xephyr \
     xorg-server-xvfb \
     xterm \
-    && true
-RUN pkgfile --update
+    && pkgfile --update
 
 RUN true \
     && groupadd --gid 2000 sudo \
@@ -96,22 +102,10 @@ RUN true \
     && chown -Rv nikos:nikos /local/nikos /home/nikos \
     && sed -i -r -e 's/.*\%wheel\s+ALL=\(ALL\).*/%wheel ALL=(ALL) NOPASSWD: ALL/' /etc/sudoers \
     && true
-USER nikos
-WORKDIR /local/nikos
 
-RUN mkdir -pv /local/nikos/aur
+USER nikos
 RUN true \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/xpra-winswitch.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/python2-lz4.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/rubymine.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/terraform-bin.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/webstorm.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/clion.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/packer-io.tar.gz \
-    && true
-RUN true \
-    &&  { true \
+    && { true \
         && printf '%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
             '#!/usr/bin/env ruby' \
             'filename = ARGV.shift' \
@@ -153,18 +147,21 @@ RUN true \
             '    true' \
             '}' \
         ; } \
-    && true
-RUN true \
-#     && /local/nikos/aur_install python2-lz4 \
-#     && /local/nikos/aur_install xpra-winswitch \
-    && /local/nikos/aur_install yarn \
-    && /local/nikos/aur_install rubymine \
-    && /local/nikos/aur_install terraform-bin \
-    && /local/nikos/aur_install webstorm \
-    && /local/nikos/aur_install clion \
-    && /local/nikos/aur_install packer-io \
-    && true
-RUN true \
+    && true \
+    && true \
+    && mkdir -pv /local/nikos/aur \
+    && true \
+    && true \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/xpra-winswitch.tar.gz \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/python2-lz4.tar.gz \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/rubymine.tar.gz \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/terraform-bin.tar.gz \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/webstorm.tar.gz \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/clion.tar.gz \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/packer-io.tar.gz \
+    && true \
+    && true \
     && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
     && chmod -v 600 ssh_host_rsa_key \
     && sudo cp --preserve=mode,timestamps ssh_host_rsa_key /etc/ssh \
@@ -186,15 +183,19 @@ RUN true \
             'allowed_users=anybody' \
             'needs_root_rights=no' \
         ; } \
-    && true
-
-ENV _JAVA_OPTIONS -Dawt.useSystemAAFontSettings=lcd
-ENV JAVA_FONTS /usr/share/fonts/TTF/
-ENV EDITOR vim
-
-RUN true \
+    && true \
+    && true \
     && printf 'nikos:2\n' | sudo chpasswd \
     && printf '%s = %s\n' 'Server' 'http://leon:9000/arch/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist \
     && true
-CMD sudo /usr/sbin/sshd -D -E /var/log/sshd.log
 
+RUN true \
+#     && /local/nikos/aur_install python2-lz4 \
+#     && /local/nikos/aur_install xpra-winswitch \
+    && /local/nikos/aur_install yarn \
+    && /local/nikos/aur_install rubymine \
+    && /local/nikos/aur_install terraform-bin \
+    && /local/nikos/aur_install webstorm \
+    && /local/nikos/aur_install clion \
+    && /local/nikos/aur_install packer-io \
+    && true
