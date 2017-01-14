@@ -105,7 +105,6 @@ RUN true \
     && true
 
 USER nikos
-WORKDIR /local/nikos
 
 RUN true \
     && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
