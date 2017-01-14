@@ -55,6 +55,7 @@ RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -Su \
     libwebp \
     libxtst \
     maven \
+    midori \
     mono \
     netcat \
     ninja \
@@ -104,7 +105,36 @@ RUN true \
     && true
 
 USER nikos
+WORKDIR /local/nikos
+
 RUN true \
+    && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
+    && chmod -v 600 ssh_host_rsa_key \
+    && sudo cp --preserve=mode,timestamps ssh_host_rsa_key /etc/ssh \
+    && sudo sed -i -r -e '\
+        s/^\s*#?\s*(PasswordAuthentication).*$/\1 no/; \
+        s/^\s*#?\s*(UsePAM).*$/\1 no/; \
+        s/^\s*#?\s*(X11Forwarding).*$/\1 yes/; \
+        s/^\s*#?\s*(X11UseLocalhost).*$/\1 yes/; \
+        s/^\s*#?\s*(X11DisplayOffset).*$/\1 10/; \
+        s/^\s*#?\s*(LogLevel).*$/\1 DEBUG1/; \
+        ' /etc/ssh/sshd_config \
+    && true \
+    && true \
+    && sudo sed -i -r -e 's/^\s*#\s*(Color)\s*$/\1/' /etc/pacman.conf \
+    && true \
+    && true \
+    && { true \
+        && sudo /local/nikos/make_script /etc/X11/Xwrapper.config \
+            'allowed_users=anybody' \
+            'needs_root_rights=no' \
+        ; } \
+    && true \
+    && true \
+    && printf 'nikos:2\n' | sudo chpasswd \
+    && printf '%s = %s\n' 'Server' 'http://leon:9000/arch/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist \
+    && true \
+    && true \
     && { true \
         && printf '%s\n\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
             '#!/usr/bin/env ruby' \
@@ -147,11 +177,56 @@ RUN true \
             '    true' \
             '}' \
         ; } \
+    && { true \
+        && /local/nikos/make_script /local/nikos/config_install \
+            '#!/usr/bin/env bash' \
+            '' \
+            'package=$1' \
+            '' \
+            '{' \
+            '    cd /local/nikos/packages/"$package" &&' \
+            '    ./configure &&' \
+            '    make install &&' \
+            '   true' \
+            '}' \
+        ; } \
+    && { true \
+        && /local/nikos/make_script /local/nikos/fetch_git_package \
+            '#!/usr/bin/env bash' \
+            '' \
+            'package="$1" ' \
+            'remote="$2"' \
+            'commit="$3"' \
+            '' \
+            'target=/local/nikos/pcakges/"$package"' \
+            '' \
+            '{ true \' \
+            '    && git clone --depth 1 --shallow-submodule --recursive -- "$remote" "$target" \' \
+            '    && git -C "$target" checkout "$commit" -- . \' \
+            ';}' \
+        ; } \
+    && { true \
+        && /local/nikos/make_script /local/nikos/fetch_git_and_config_install \
+            '#!/usr/bin/env bash' \
+            '' \
+            'package="$1" ' \
+            'remote="$2"' \
+            'commit="$3"' \
+            '' \
+            '{ true \' \
+            '    && /local/nikos/fetch_git_package "$package" "$remote" "$commit" \' \
+            '    && /local/nikos/config_install "$package" \' \
+            ';}' \
+        ; } \
     && true \
     && true \
-    && mkdir -pv /local/nikos/aur \
+    && mkdir -pv /local/nikos/aur /local/nikos/packages \
     && true \
     && true \
+    && true
+
+
+RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/xpra-winswitch.tar.gz \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/python2-lz4.tar.gz \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz \
@@ -160,36 +235,9 @@ RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/webstorm.tar.gz \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/clion.tar.gz \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/packer-io.tar.gz \
+    && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework 9fb82f5 \
     && true \
     && true \
-    && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
-    && chmod -v 600 ssh_host_rsa_key \
-    && sudo cp --preserve=mode,timestamps ssh_host_rsa_key /etc/ssh \
-    && sudo sed -i -r -e '\
-        s/^\s*#?\s*(PasswordAuthentication).*$/\1 no/; \
-        s/^\s*#?\s*(UsePAM).*$/\1 no/; \
-        s/^\s*#?\s*(X11Forwarding).*$/\1 yes/; \
-        s/^\s*#?\s*(X11UseLocalhost).*$/\1 yes/; \
-        s/^\s*#?\s*(X11DisplayOffset).*$/\1 10/; \
-        s/^\s*#?\s*(LogLevel).*$/\1 DEBUG1/; \
-        ' /etc/ssh/sshd_config \
-    && true \
-    && true \
-    && sudo sed -i -r -e 's/^\s*#\s*(Color)\s*$/\1/' /etc/pacman.conf \
-    && true \
-    && true \
-    && { true \
-        && sudo /local/nikos/make_script /etc/X11/Xwrapper.config \
-            'allowed_users=anybody' \
-            'needs_root_rights=no' \
-        ; } \
-    && true \
-    && true \
-    && printf 'nikos:2\n' | sudo chpasswd \
-    && printf '%s = %s\n' 'Server' 'http://leon:9000/arch/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist \
-    && true
-
-RUN true \
 #     && /local/nikos/aur_install python2-lz4 \
 #     && /local/nikos/aur_install xpra-winswitch \
     && /local/nikos/aur_install yarn \
@@ -198,4 +246,5 @@ RUN true \
     && /local/nikos/aur_install webstorm \
     && /local/nikos/aur_install clion \
     && /local/nikos/aur_install packer-io \
+    && rm -rf /local/nikos/aur /local/nikos/packages \
     && true
