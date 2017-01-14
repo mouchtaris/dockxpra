@@ -196,7 +196,7 @@ RUN true \
             'target=/local/nikos/pcakges/"$package"' \
             '' \
             '{ true \' \
-            '    && git clone --depth 1 --shallow-submodule --recursive -- "$remote" "$target" \' \
+            '    && git clone --recursive -- "$remote" "$target" \' \
             '    && git -C "$target" checkout "$commit" -- . \' \
             ';}' \
         ; } \
