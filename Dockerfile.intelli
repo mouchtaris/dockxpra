@@ -85,7 +85,6 @@ RUN true \
     && true \
     && true \
     && printf 'nikos:2\n' | sudo chpasswd \
-    && printf '%s = %s\n' 'Server' 'http://leon:9000/arch/$repo/os/$arch' | sudo tee /etc/pacman.d/mirrorlist \
     && true \
     && true \
     && { true \
@@ -122,6 +121,7 @@ RUN true \
             '    tar xvf /local/nikos/aur/$package.tar.gz &&' \
             '    cd * &&' \
             '    cp -av /local/nikos/pacman_for_dockers ./ &&' \
+            '    sudo ./pacman_for_dockers -Syy &&' \
             '    PACMAN=$(pwd)/pacman_for_dockers makepkg -s &&' \
             '    sync &&' \
             '    sudo ./pacman_for_dockers --upgrade $package-*.tar.xz &&' \
@@ -304,8 +304,8 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     xorg-server-xephyr \
     xorg-server-xvfb \
     xterm \
-    && pkgfile --update \
-    && paccache --remove --keep 0 \
-    && paccache --remove --uninstalled --keep 0 \
+    && sudo pkgfile --update \
+    && sudo pacman_clean \
+    && printf '%s = %s\n' 'Server' 'http://leon:9000/arch/$repo/os/$arch' \
+        | sudo tee /etc/pacman.d/mirrorlist \
     && true
-
