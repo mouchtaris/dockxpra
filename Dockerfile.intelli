@@ -233,22 +233,51 @@ RUN true \
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/xpra-winswitch.tar.gz \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/python2-lz4.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/rubymine.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/terraform-bin.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/webstorm.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/clion.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/packer-io.tar.gz \
-    && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework 9fb82f5 \
-    && true \
-    && true \
 #     && /local/nikos/aur_install python2-lz4 \
 #     && /local/nikos/aur_install xpra-winswitch \
+    && true
+RUN true \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz \
     && /local/nikos/aur_install yarn \
+    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
+    && true
+RUN true \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/rubymine.tar.gz \
     && /local/nikos/aur_install rubymine \
+    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
+    && true
+RUN true \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/terraform-bin.tar.gz \
     && /local/nikos/aur_install terraform-bin \
+    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
+    && true
+RUN true \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/webstorm.tar.gz \
     && /local/nikos/aur_install webstorm \
+    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
+    && true
+RUN true \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/clion.tar.gz \
     && /local/nikos/aur_install clion \
+    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
+    && true
+RUN true \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/packer-io.tar.gz \
     && /local/nikos/aur_install packer-io \
-    && rm -rf /local/nikos/aur /local/nikos/packages \
+    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
+    && true
+RUN true \
+    && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework.git 9fb82f5 \
+    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
+    && true
+RUN true \
+    && mkdir -pv /local/nikos/packages \
+    && /local/nikos/fetch_git_package rbenv https://github.com/rbenv/rbenv.git 4f8925a \
+    && sudo mv /local/nikos/packages/rbenv /usr/local/ \
+    && cd /usr/local/rbenv \
+    && src/configure \
+    && make -C src \
+    && sudo ln -sv /usr/local/rbenv/bin/* /usr/local/bin/ \
+    && git clone https://github.com/rbenv/ruby-build.git /usr/local/rbenv/plugins/ruby-build \
+    && sudo chown --recursive root:root /usr/local/rbenv \
     && true
