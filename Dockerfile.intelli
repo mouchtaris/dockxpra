@@ -17,86 +17,35 @@ RUN true \
     && pacman --noconfirm --needed -S archlinux-keyring \
     && pacman --noconfirm --needed -S pacman \
     && pacman-db-upgrade \
+    && printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
+        '#!/usr/bin/env bash' \
+        'true \' \
+        '&& paccache --remove --keep 0 \' \
+        '&& paccache --remove --uninstalled --keep 0 \' \
+        '&& find \' \
+        '       /local/nikos/aur/ /local/nikos/packages/ \' \
+        '       -mindepth 1 -maxdepth 1 -print0 \' \
+        '       | xargs -0 rm -rf \' \
+        '&& true' \
+        | tee /usr/local/bin/pacman_clean \
+    && chmod --verbose 755 /usr/local/bin/pacman_clean \
+    && pacman_clean \
     && true
 
-RUN pacman -Ssq ttf- | xargs pacman --noconfirm --needed -Su \
+#
+# Absolute basics
+#
+RUN pacman --noconfirm --needed -Su \
     aria2 \
-    atom \
-    awesome \
     base \
     base-devel \
-    boost \
-    cargo \
-    clang \
     cmake \
-    ctags \
-    darkhttpd \
-    dnsutils \
     docker \
-    docker-compose \
-    ffmpeg \
-    firefox \
-    fish \
-    gconf \
-    gdb \
     git \
-    gkrellm \
-    gnupg \
-    go \
-    graphicsmagick \
-    gvim \
-    haveged \
-    htop \
-    imagemagick \
-    intellij-idea-community-edition \
-    irssi \
-    jdk8-openjdk \
-    jruby \
-    libwebp \
-    libxtst \
-    maven \
-    midori \
-    mono \
-    netcat \
-    ninja \
-    npm \
-    openjdk8-src \
     openssh \
-    parallel \
-    pkgfile \
-    postgresql \
-    pulseaudio \
-    pv \
-    pygtk \
-    python \
-    python2 \
-    python2-imaging \
-    python-pip \
-    rsync \
     ruby \
-    rust \
-    sbt \
     sudo \
-    svn \
-    terminology \
-    tmux \
-    typescript \
-    unzip \
-    wget \
-    wireshark-qt \
-    x264 \
-    xclip \
-    xf86-video-dummy \
-    xfce4 \
-    xorg \
-    xorg-server-xephyr \
-    xorg-server-xvfb \
-    xterm \
-    && pkgfile --update \
-    && paccache --remove --keep 0 \
-    && paccache --remove --uninstalled --keep 0 \
-    && true
-
+    && pacman_clean
 RUN true \
     && groupadd --gid 2000 sudo \
     && groupadd --gid 1000 nikos \
@@ -109,6 +58,15 @@ RUN true \
 
 USER nikos
 
+# ---
+# require:
+# - openssh
+# - ruby
+# - aria2
+# - git
+# - make
+# - g++
+# - cmake
 RUN true \
     && ssh-keygen -t rsa -C '' -f ssh_host_rsa_key \
     && chmod -v 600 ssh_host_rsa_key \
@@ -138,7 +96,7 @@ RUN true \
             'File.open(filename, "w") do |fout|' \
             '    ARGV.each do |arg|' \
             '        fout.puts arg' \
-            '        puts arg' \
+            '        STDERR.puts arg' \
             '    end' \
             '    fout.chmod 0755' \
             'end' \
@@ -239,37 +197,30 @@ RUN true \
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz \
     && /local/nikos/aur_install yarn \
-    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
-    && true
+    && pacman_clean
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/rubymine.tar.gz \
     && /local/nikos/aur_install rubymine \
-    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
-    && true
+    && pacman_clean
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/terraform-bin.tar.gz \
     && /local/nikos/aur_install terraform-bin \
-    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
-    && true
+    && pacman_clean
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/webstorm.tar.gz \
     && /local/nikos/aur_install webstorm \
-    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
-    && true
+    && pacman_clean
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/clion.tar.gz \
     && /local/nikos/aur_install clion \
-    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
-    && true
+    && pacman_clean
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/packer-io.tar.gz \
     && /local/nikos/aur_install packer-io \
-    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
-    && true
+    && pacman_clean
 RUN true \
     && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework.git 9fb82f5 \
-    && rm -rf /local/nikos/aur/* /local/nikos/packages/* && sudo rm -rf /var/cache/pacman/* \
-    && true
+    && pacman_clean
 RUN true \
     && mkdir -pv /local/nikos/packages \
     && /local/nikos/fetch_git_package rbenv https://github.com/rbenv/rbenv.git 4f8925a \
@@ -277,7 +228,84 @@ RUN true \
     && cd /usr/local/rbenv \
     && src/configure \
     && make -C src \
-    && sudo ln -sv /usr/local/rbenv/bin/* /usr/local/bin/ \
+    && /local/nikos/make_script /dev/stdout \
+        '#!/usr/bin/env bash' \
+        'env RBENV_ROOT=/usr/local/rbenv /usr/local/rbenv/bin/rbenv "$@"' \
+        | sudo tee /usr/local/bin/rbenv \
+        && sudo chmod --verbose 755 /usr/local/bin/rbenv \
     && git clone https://github.com/rbenv/ruby-build.git /usr/local/rbenv/plugins/ruby-build \
     && sudo chown --recursive root:root /usr/local/rbenv \
+    && pacman_clean
+RUN true \
+    && sudo rbenv install 2.3.3 \
     && true
+
+RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Su \
+    atom \
+    awesome \
+    boost \
+    cargo \
+    clang \
+    ctags \
+    darkhttpd \
+    dnsutils \
+    docker-compose \
+    ffmpeg \
+    firefox \
+    fish \
+    gconf \
+    gdb \
+    gkrellm \
+    gnupg \
+    go \
+    graphicsmagick \
+    gvim \
+    haveged \
+    htop \
+    imagemagick \
+    intellij-idea-community-edition \
+    irssi \
+    jdk8-openjdk \
+    jruby \
+    libwebp \
+    libxtst \
+    maven \
+    midori \
+    mono \
+    netcat \
+    ninja \
+    npm \
+    openjdk8-src \
+    parallel \
+    pkgfile \
+    postgresql \
+    pulseaudio \
+    pv \
+    pygtk \
+    python \
+    python2 \
+    python2-imaging \
+    python-pip \
+    rsync \
+    rust \
+    sbt \
+    svn \
+    terminology \
+    tmux \
+    typescript \
+    unzip \
+    wget \
+    wireshark-qt \
+    x264 \
+    xclip \
+    xf86-video-dummy \
+    xfce4 \
+    xorg \
+    xorg-server-xephyr \
+    xorg-server-xvfb \
+    xterm \
+    && pkgfile --update \
+    && paccache --remove --keep 0 \
+    && paccache --remove --uninstalled --keep 0 \
+    && true
+
