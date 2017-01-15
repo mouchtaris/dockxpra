@@ -240,7 +240,7 @@ RUN true \
     && sudo rbenv install 2.3.3 \
     && true
 
-RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Su \
+RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     atom \
     awesome \
     boost \
