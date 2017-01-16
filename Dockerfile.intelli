@@ -241,11 +241,16 @@ RUN true \
     && true
 
 RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
+    aspell \
+    aspell-en \
     atom \
     awesome \
+    aws-cli \
     boost \
     cargo \
+    ccache \
     clang \
+    colordiff \
     ctags \
     darkhttpd \
     dnsutils \
@@ -291,10 +296,12 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     sbt \
     svn \
     terminology \
+    time \
     tmux \
     typescript \
     unzip \
     wget \
+    wireshark-qt
     wireshark-qt \
     x264 \
     xclip \
