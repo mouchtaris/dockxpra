@@ -301,7 +301,6 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     typescript \
     unzip \
     wget \
-    wireshark-qt
     wireshark-qt \
     x264 \
     xclip \
