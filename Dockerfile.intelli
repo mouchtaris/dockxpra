@@ -239,6 +239,10 @@ RUN true \
 RUN true \
     && sudo rbenv install 2.3.3 \
     && true
+RUN true \
+    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/direnv.tar.gz \
+    && /local/nikos/aur_install direnv \
+    && pacman_clean
 
 RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     aspell \
