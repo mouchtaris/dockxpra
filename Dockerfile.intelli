@@ -243,6 +243,12 @@ RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/direnv.tar.gz \
     && /local/nikos/aur_install direnv \
     && pacman_clean
+RUN true \
+    && sudo gem install --no-user neovim \
+    && cd /opt/jruby/tool/nailgun/ \
+    && sudo ./configure \
+    && sudo make \
+    && true
 
 RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     aspell \
@@ -294,6 +300,7 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     python \
     python2 \
     python2-imaging \
+    python-neovim \
     python-pip \
     rsync \
     rust \
