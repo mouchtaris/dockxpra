@@ -7,69 +7,66 @@ filetype off                  " required
 """""""""""""""""""""""""""""""""""""""""""""""
 """"" Plug Stuff
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
-call plug#begin('/usr/share/nvim/plugged')
+silent! call plug#begin('/usr/share/nvim/plugged')
+if exists(':Plug')
 
-""" " Make sure you use single quotes
-""" 
-""" " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
-""" Plug 'junegunn/vim-easy-align'
-""" 
-""" " Any valid git URL is allowed
-""" Plug 'https://github.com/junegunn/vim-github-dashboard.git'
-""" 
-""" " Multiple Plug commands can be written in a single line using | separators
-""" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-""" 
-""" " On-demand loading
-""" Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-""" Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-""" 
-""" " Using a non-master branch
-""" Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
-""" 
-""" " Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
-""" Plug 'fatih/vim-go', { 'tag': '*' }
-""" 
-""" " Plugin options
-""" Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
-""" 
-""" " Plugin outside ~/.vim/plugged with post-update hook
-""" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-""" 
-""" " Unmanaged plugin (manually installed and updated)
-""" Plug '~/my-prototype-plugin'
+  """ " Make sure you use single quotes
+  """
+  """ " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+  """ Plug 'junegunn/vim-easy-align'
+  """
+  """ " Any valid git URL is allowed
+  """ Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+  """
+  """ " Multiple Plug commands can be written in a single line using | separators
+  """ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+  """
+  """ " On-demand loading
+  """ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+  """ Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+  """
+  """ " Using a non-master branch
+  """ Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+  """
+  """ " Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
+  """ Plug 'fatih/vim-go', { 'tag': '*' }
+  """
+  """ " Plugin options
+  """ Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
+  """
+  """ " Plugin outside ~/.vim/plugged with post-update hook
+  """ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  """
+  """ " Unmanaged plugin (manually installed and updated)
+  """ Plug '~/my-prototype-plugin'
 
-Plug 'Valloric/YouCompleteMe', {
-  \     'do': 'env USE_PYTHON2=OFF ./install.py --build-dir=/local/nikos/tmp --all'
-  \  }
-Plug 'wincent/command-t', {
-  \     'do': 'cd ruby/command-t && ruby extconf.rb && make'
-  \  }
-Plug 'bling/vim-airline'
-"Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
-Plug 'sjbach/lusty'
-Plug 'derekwyatt/vim-scala'
-Plug 'altercation/vim-colors-solarized'
-Plug 'vim-ruby/vim-ruby'
-Plug 'kchmck/vim-coffee-script'
-Plug 'jwhitley/vim-literate-coffeescript'
-"Plug 'flazz/vim-colorschemes'
-"Plug 'vim-scripts/BusyBee.git'
-"Plug 'goatslacker/mango.vim'
-Plug 'morhetz/gruvbox'
-"Plug 'dag/vim-fish'
-"Plug 'ktvoelker/sbt-vim'
-Plug 'vim-syntastic/syntastic'
-Plug 'tpope/vim-unimpaired'
-Plug 'fholgado/minibufexpl.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tpope/vim-projectionist'
-Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'Valloric/YouCompleteMe'
+  Plug 'wincent/command-t'
+  Plug 'bling/vim-airline'
+  "Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+  Plug 'sjbach/lusty'
+  Plug 'derekwyatt/vim-scala'
+  Plug 'altercation/vim-colors-solarized'
+  Plug 'vim-ruby/vim-ruby'
+  Plug 'kchmck/vim-coffee-script'
+  Plug 'jwhitley/vim-literate-coffeescript'
+  "Plug 'flazz/vim-colorschemes'
+  "Plug 'vim-scripts/BusyBee.git'
+  "Plug 'goatslacker/mango.vim'
+  Plug 'morhetz/gruvbox'
+  "Plug 'dag/vim-fish'
+  "Plug 'ktvoelker/sbt-vim'
+  Plug 'vim-syntastic/syntastic'
+  Plug 'tpope/vim-unimpaired'
+  Plug 'fholgado/minibufexpl.vim'
+  Plug 'scrooloose/nerdtree'
+  Plug 'Xuyuanp/nerdtree-git-plugin'
+  Plug 'tpope/vim-projectionist'
+  Plug 'ctrlpvim/ctrlp.vim'
 
-" Initialize plugin system
-call plug#end()
-
+  " Initialize plugin system
+  call plug#end()
+endif
 
 
 
@@ -83,7 +80,7 @@ call plug#end()
 
 " let Vundle manage Vundle, required
 "" Plugin 'gmarik/Vundle.vim'
-"" 
+""
 "" Plugin 'Valloric/YouCompleteMe'
 "" Plugin 'wincent/command-t'
 "" Plugin 'bling/vim-airline'
@@ -163,7 +160,9 @@ let g:ycm_server_python_interpreter='/usr/bin/python'
 "
 "" Recomended beginner configuration by Syntastic
 " set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+if exists('SyntasticStatuslineFlag')
+  set statusline+=%{SyntasticStatuslineFlag()}
+endif
 " set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 0 " auto open, auto close
@@ -211,7 +210,7 @@ set background=dark
 
 " set background=dark
 " colorscheme solarized
-colorscheme gruvbox
+silent! colorscheme gruvbox
 
 ruby << EOR
 module Isi

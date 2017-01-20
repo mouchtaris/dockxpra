@@ -1,0 +1,34 @@
+[core]
+	excludesfile = /etc/git/gitignore
+[push]
+	default = upstream
+[alias]
+	h = log --color --pretty=format:\"%C(auto)%h %ad | %s%d [%an]\" --graph --date=short
+	ha = log --color --pretty=format:\"%C(auto)%h %ad | %s%d [%an]\" --graph --date=short --all
+	h1 = log --color --pretty=format:\"%C(auto)%h %ad | %s%d [%an]\" --graph --date=short -1
+	hp = log --color --pretty=format:\"%C(auto)%h %ad | %s%d [%an]\" --graph --date=short -p
+	hs = log --color --pretty=format:\"%C(auto)%h %ad | %s%d [%an]\" --graph --date=short --stat
+	ha1 = log --color --pretty=format:\"%C(auto)%h %ad | %s%d [%an]\" --graph --date=short --all -1
+
+	d = diff
+	ds = diff --staged
+	stat = diff --stat
+	dc = diff --color-words
+	dsc = diff --color-words
+
+	s = status --branch --short
+	sti = status --ignored --column
+	st = status
+
+	addu = add --verbose --update
+
+	reup = remote update
+
+	co = checkout
+
+	m = commit
+	ma = commit --amend
+
+	r = rebase
+[rerere]
+	enabled = true
