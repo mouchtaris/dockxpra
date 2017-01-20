@@ -236,9 +236,15 @@ RUN true \
     && git clone https://github.com/rbenv/ruby-build.git /usr/local/rbenv/plugins/ruby-build \
     && sudo chown --recursive root:root /usr/local/rbenv \
     && sudo pacman_clean
-RUN true \
-    && sudo rbenv install 2.3.3 \
-    && true
+
+#
+# Install the rubies
+#
+RUN sudo rbenv install 2.3.3
+RUN sudo rbenv install 2.4.0
+RUN sudo rbenv install rbx-3.69
+RUN sudo rbenv install jruby-9.1.7.0
+
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/direnv.tar.gz \
     && /local/nikos/aur_install direnv \
