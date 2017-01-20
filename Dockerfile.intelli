@@ -29,7 +29,7 @@ RUN true \
         '&& true' \
         | tee /usr/local/bin/pacman_clean \
     && chmod --verbose 755 /usr/local/bin/pacman_clean \
-    && sudo pacman_clean \
+    && pacman_clean \
     && true
 
 #
@@ -45,7 +45,7 @@ RUN pacman --noconfirm --needed -Su \
     openssh \
     ruby \
     sudo \
-    && sudo pacman_clean
+    && pacman_clean
 RUN true \
     && groupadd --gid 2000 sudo \
     && groupadd --gid 1000 nikos \
