@@ -381,3 +381,9 @@ RUN true \
 COPY [  "skeletons/gitconfig", "/etc/gitconfig" ]
 COPY [  "skeletons/git/", "/etc/git/" ]
 
+RUN true \
+    && sudo ln -svf $(which nvim) $(which vim)
+    && printf '%s\n' 'eval (direnv hook fish)' \
+        | sudo tee -a /usr/share/fish/config.fish \
+    && true
+
