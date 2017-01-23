@@ -48,6 +48,7 @@ RUN pacman --noconfirm --needed -Su \
     clang \
     cmake \
     docker \
+    fish \
     git \
     mono \
     neovim \
@@ -199,6 +200,9 @@ RUN true \
     && mkdir -pv /local/nikos/aur /local/nikos/packages \
     && true \
     && true \
+    && sudo ln -svf $(which nvim) $(which vim)
+    && printf '%s\n' 'eval (direnv hook fish)' \
+        | sudo tee -a /usr/share/fish/config.fish \
     && true
 
 
@@ -315,7 +319,6 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     docker-compose \
     ffmpeg \
     firefox \
-    fish \
     gconf \
     gdb \
     gkrellm \
@@ -380,10 +383,3 @@ RUN true \
 #
 COPY [  "skeletons/gitconfig", "/etc/gitconfig" ]
 COPY [  "skeletons/git/", "/etc/git/" ]
-
-RUN true \
-    && sudo ln -svf $(which nvim) $(which vim)
-    && printf '%s\n' 'eval (direnv hook fish)' \
-        | sudo tee -a /usr/share/fish/config.fish \
-    && true
-
