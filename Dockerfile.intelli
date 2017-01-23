@@ -22,11 +22,12 @@ RUN true \
         'true \' \
         '&& paccache --remove --keep 0 \' \
         '&& paccache --remove --uninstalled --keep 0 \' \
-        '&& find \' \
-        '       /local/nikos/aur/ /local/nikos/packages/ \' \
-        '       -mindepth 1 -maxdepth 1 -print0 \' \
-        '       > /tmp/files2die \' \
-        '&& printf "+++ %s in savings\n" "$( xargs -0 du -sh 0</tmp/files2die )" 1>&2 \' \
+        '&& for dir in aur packages; do \' \
+        '       if [ -d "$dir" ]; then \' \
+        '           find "$dir" -mindepth 1 -maxdepth 1 -print0; \' \
+        '       fi; \' \
+        '   done 1>/tmp/files2die \' \
+        '&& printf "+++ %s in savings\n" "$( du -csh --files0-from=/tmp/files2die | tail -1)" 1>&2 \' \
         '&& xargs -0 rm -rf 0</tmp/files2die \' \
         '&& xargs -0 rm -rf tmp/files2die \' \
         '&& true' \
@@ -42,12 +43,21 @@ RUN pacman --noconfirm --needed -Su \
     aria2 \
     base \
     base-devel \
+    cargo \
+    ccache \
+    clang \
     cmake \
     docker \
     git \
+    mono \
+    neovim \
+    npm \
     openssh \
     parallel \
+    python \
     ruby \
+    rust \
+    sbt \
     sudo \
     && pacman_clean
 RUN true \
@@ -248,7 +258,8 @@ RUN true \
 #
 # Install the rubies
 #
-RUN printf '%s\x00%s\x00%s\x00%s' | parallel -0 sudo rbenv install '{}'
+RUN printf '%s' 2.3.3 | \
+    parallel -0 sudo rbenv install
 
 #
 # ### Monster
@@ -264,18 +275,20 @@ COPY [  "skeletons/nvim/sysinit.vim",   \
 RUN true \
     && sudo mkdir -pv /usr/share/nvim/site/autoload \
     && curl --location https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
-        | sudo tee /usr/share/nvim/site/autoload/plug.vim \
-    && true\
-    && true\
+        | sudo tee /usr/share/nvim/site/autoload/plug.vim 1>/dev/null \
     && sudo mkdir -pv /usr/share/nvim/plugged \
     && sudo chown --verbose nikos:nikos /usr/share/nvim/plugged \
+    && sudo gem install --no-user neovim \
+    && true
+RUN true \
     && printf "%s\n" 'echo exists(":Plug")' | \
         nvim -E -V1 -n -R -N -u NORC -U NONE -s -i NONE \
             -S /usr/share/nvim/sysinit.vim \
             -c :PlugInstall \
-            -S /usr/share/nvim/snapshot.vim \
             -c 'echo "" | qall!' \
             -- - \
+    && true
+RUN true \
     && sudo chown --recursive root:root /usr/share/nvim \
     && sudo find /root -mindepth 1 -maxdepth 1 -print0 | xargs -0 sudo rm -rf \
     && true
@@ -295,9 +308,6 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     awesome \
     aws-cli \
     boost \
-    cargo \
-    ccache \
-    clang \
     colordiff \
     ctags \
     darkhttpd \
@@ -324,24 +334,19 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     libxtst \
     maven \
     midori \
-    mono \
     netcat \
     ninja \
-    npm \
     openjdk8-src \
     pkgfile \
     postgresql \
     pulseaudio \
     pv \
     pygtk \
-    python \
     python2 \
     python2-imaging \
     python-neovim \
     python-pip \
     rsync \
-    rust \
-    sbt \
     svn \
     terminology \
     time \
@@ -365,7 +370,6 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     && true
 
 RUN true \
-    && sudo gem install --no-user neovim \
     && cd /opt/jruby/tool/nailgun/ \
     && sudo ./configure \
     && sudo make \
