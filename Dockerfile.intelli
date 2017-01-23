@@ -325,7 +325,6 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     gnupg \
     go \
     graphicsmagick \
-    gvim \
     haveged \
     htop \
     imagemagick \
