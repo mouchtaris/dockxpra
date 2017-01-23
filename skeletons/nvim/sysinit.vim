@@ -171,7 +171,7 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_id_checkers = 1
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
-let g:syntastic_ruby_rubocop_args = '--auto-correct --display-cop-names'
+let g:syntastic_ruby_rubocop_args = '--display-cop-names'
 
 """""""""""""""""""""""""""""""""""""""""""
 """ Neovim adjustments

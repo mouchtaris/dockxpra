@@ -200,8 +200,16 @@ RUN true \
     && mkdir -pv /local/nikos/aur /local/nikos/packages \
     && true \
     && true \
-    && sudo ln -svf $(which nvim) $(which vim)
-    && printf '%s\n' 'eval (direnv hook fish)' \
+    && sudo ln -svf $(which nvim) $(which vim) \
+    && printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
+        'eval (direnv hook fish)' \
+        'set -x EDITOR vim' \
+        'set -g fish_key_bindings fish_vi_key_bindings' \
+        'set -g fish_user_paths $HOME/_rute/bin' \
+        'function fish_user_key_bindings' \
+        '  echo +++[loading/...]  fish_user_key_bindings' \
+        '  bind -M insert \cf forward-char' \
+        'end' \
         | sudo tee -a /usr/share/fish/config.fish \
     && true
 
