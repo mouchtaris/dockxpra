@@ -56,7 +56,7 @@ RUN pacman --noconfirm --needed -Su \
     openssh \
     parallel \
     python \
-    ruby \
+    ruby-bundler \
     rust \
     sbt \
     sudo \
