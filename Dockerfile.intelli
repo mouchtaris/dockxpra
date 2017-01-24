@@ -392,5 +392,6 @@ RUN true \
 #
 # Global git configuration
 #
-COPY [  "skeletons/gitconfig", "/etc/gitconfig" ]
-COPY [  "skeletons/git/", "/etc/git/" ]
+COPY [  "skeletons/gitconfig"   ,   "/etc/gitconfig"    ]
+COPY [  "skeletons/git/"        ,   "/etc/git/"         ]
+COPY [  "skeletons/tmux.conf"   ,   '"etc/tmux.conf"    ]
