@@ -200,7 +200,7 @@ RUN true \
     && mkdir -pv /local/nikos/aur /local/nikos/packages \
     && true \
     && true \
-    && sudo ln -svf $(which nvim) $(which vim) \
+    && sudo ln -svf $(which nvim) /usr/local/bin/vim \
     && printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
         'eval (direnv hook fish)' \
         'set -x EDITOR vim' \
