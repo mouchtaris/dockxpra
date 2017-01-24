@@ -43,6 +43,7 @@ RUN pacman --noconfirm --needed -Su \
     aria2 \
     base \
     base-devel \
+    boost \
     cargo \
     ccache \
     clang \
@@ -310,7 +311,11 @@ RUN true \
     && sudo make
 RUN true \
     && cd /usr/share/nvim/plugged/YouCompleteMe \
-    && sudo env USE_PYTHON2=OFF USE_SYSTEM_LIBCLANG=ON ./install.py --build-dir=/local/nikos/packages --all \
+    && sudo env USE_PYTHON2=OFF ./install.py \
+        --build-dir=/local/nikos/packages \
+        --system-libclang \
+        --system-boost \
+        --all \
     && sudo pacman_clean
 
 RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
@@ -319,7 +324,6 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     atom \
     awesome \
     aws-cli \
-    boost \
     colordiff \
     ctags \
     darkhttpd \
