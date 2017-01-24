@@ -394,4 +394,4 @@ RUN true \
 #
 COPY [  "skeletons/gitconfig"   ,   "/etc/gitconfig"    ]
 COPY [  "skeletons/git/"        ,   "/etc/git/"         ]
-COPY [  "skeletons/tmux.conf"   ,   '"etc/tmux.conf"    ]
+COPY [  "skeletons/tmux.conf"   ,   "/etc/tmux.conf"    ]
