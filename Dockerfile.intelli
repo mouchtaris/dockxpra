@@ -387,6 +387,7 @@ RUN true \
     && cd /opt/jruby/tool/nailgun/ \
     && sudo ./configure \
     && sudo make \
+    && sudo archlinux-java set java-8-openjdk \
     && true
 
 #
