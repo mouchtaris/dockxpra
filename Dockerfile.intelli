@@ -325,6 +325,7 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     atom \
     awesome \
     aws-cli \
+    chromium \
     colordiff \
     ctags \
     darkhttpd \
@@ -340,15 +341,18 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     graphicsmagick \
     haveged \
     htop \
+    httpie \
     imagemagick \
     intellij-idea-community-edition \
     irssi \
     jdk8-openjdk \
+    jq
     jruby \
     libwebp \
     libxtst \
     maven \
     midori \
+    mysql \
     netcat \
     ninja \
     openjdk8-src \
@@ -356,12 +360,14 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     postgresql \
     pulseaudio \
     pv \
+    pwgen \
     pygtk \
     python2 \
     python2-imaging \
     python-neovim \
     python-pip \
     rsync \
+    scala \
     svn \
     terminology \
     time \
@@ -378,6 +384,7 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     xorg-server-xephyr \
     xorg-server-xvfb \
     xterm \
+    youtube-dl \
     && sudo pkgfile --update \
     && sudo pacman_clean \
     && printf '%s = %s\n' 'Server' 'http://leon:9000/arch/$repo/os/$arch' \
