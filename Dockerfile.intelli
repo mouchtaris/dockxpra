@@ -39,7 +39,7 @@ RUN true \
 #
 # Absolute basics
 #
-RUN pacman --noconfirm --needed -Su \
+RUN pacman --noconfirm --needed -Su --force \
     aria2 \
     base \
     base-devel \
@@ -293,13 +293,14 @@ RUN true \
     && sudo chown --verbose nikos:nikos /usr/share/nvim/plugged \
     && sudo gem install --no-user neovim \
     && true
-RUN true \
-    && printf "%s\n" 'echo exists(":Plug")' | \
-        nvim -E -V1 -n -R -N -u NORC -U NONE -s -i NONE \
-            -S /usr/share/nvim/sysinit.vim \
-            -c :PlugInstall \
-            -c 'echo "" | qall!' \
-            -- - \
+#RUN true \
+#    && printf "%s\n" 'echo exists(":Plug")' | \
+#        nvim -E -V1 -n -R -N -u NORC -U NONE -s -i NONE \
+#            -S /usr/share/nvim/sysinit.vim \
+#            -c :PlugInstall \
+#            -c 'echo "" | qall!' \
+#            -- - \
+RUN nvim -c ':PlugInstall | :qa' \
     && true
 RUN true \
     && sudo chown --recursive root:root /usr/share/nvim \
