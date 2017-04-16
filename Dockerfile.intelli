@@ -218,8 +218,8 @@ RUN true \
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/xpra-winswitch.tar.gz \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/python2-lz4.tar.gz \
+    && /local/nikos/aur_install xpra-winswitch \
 #     && /local/nikos/aur_install python2-lz4 \
-#     && /local/nikos/aur_install xpra-winswitch \
     && true
 RUN true \
     && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz \
