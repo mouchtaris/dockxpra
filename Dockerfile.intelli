@@ -135,7 +135,7 @@ RUN true \
             '    mkdir -pv tmp/aur &&' \
             '    cd tmp/aur &&' \
             '    tar xvf /local/nikos/aur/$package.tar.gz &&' \
-            '    cd * &&' \
+            '    cd $package &&' \
             '    cp -av /local/nikos/pacman_for_dockers ./ &&' \
             '    sudo ./pacman_for_dockers -Syy &&' \
             '    PACMAN=$(pwd)/pacman_for_dockers makepkg -s &&' \
@@ -215,14 +215,25 @@ RUN true \
     && true
 
 
+RUN parallel aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/'{}' ::: \
+    python-lz4.tar.gz \
+    python2-lz4.tar.gz \
+    python2-gtkglext.tar.gz \
+    rencode.tar.gz \
+    xpra-winswitch.tar.gz \
+    yarn.tar.gz \
+    terraform-bin.tar.gz \
+    packer-io.tar.gz \
+    direnv.tar.gz \
+    && true
+RUN /local/nikos/aur_install python-lz4
+RUN /local/nikos/aur_install python2-lz4
+RUN /local/nikos/aur_install python2-gtkglext
+RUN /local/nikos/aur_install rencode
 RUN true \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/xpra-winswitch.tar.gz \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/python2-lz4.tar.gz \
     && /local/nikos/aur_install xpra-winswitch \
-#     && /local/nikos/aur_install python2-lz4 \
     && true
 RUN true \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/yarn.tar.gz \
     && /local/nikos/aur_install yarn \
     && sudo pacman_clean
 #RUN true \
@@ -230,7 +241,6 @@ RUN true \
 #    && /local/nikos/aur_install rubymine \
 #    && sudo pacman_clean
 RUN true \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/terraform-bin.tar.gz \
     && /local/nikos/aur_install terraform-bin \
     && sudo pacman_clean
 #RUN true \
@@ -242,7 +252,6 @@ RUN true \
 #    && /local/nikos/aur_install clion \
 #    && sudo pacman_clean
 RUN true \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/packer-io.tar.gz \
     && /local/nikos/aur_install packer-io \
     && sudo pacman_clean
 RUN true \
@@ -264,7 +273,6 @@ RUN true \
     && sudo chown --recursive root:root /usr/local/rbenv \
     && sudo pacman_clean
 RUN true \
-    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/direnv.tar.gz \
     && /local/nikos/aur_install direnv \
     && sudo pacman_clean
 
