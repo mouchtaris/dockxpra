@@ -15,7 +15,7 @@ RUN true \
         | tee /etc/pacman.d/mirrorlist \
     && pacman --noconfirm --needed -Sy \
     && pacman --noconfirm --needed -S archlinux-keyring \
-    && pacman --noconfirm --needed -S pacman \
+    && pacman --noconfirm --needed -Su --force \
     && pacman-db-upgrade \
     && printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
         '#!/usr/bin/env bash' \
@@ -39,7 +39,7 @@ RUN true \
 #
 # Absolute basics
 #
-RUN pacman --noconfirm --needed -Su --force \
+RUN pacman --noconfirm --needed -S --force \
     aria2 \
     base \
     base-devel \
@@ -134,7 +134,8 @@ RUN true \
             '{' \
             '    mkdir -pv tmp/aur &&' \
             '    cd tmp/aur &&' \
-            '    tar xvf /local/nikos/aur/$package.tar.gz &&' \
+            '    aria2c https://aur.archlinux.org/cgit/aur.git/snapshot/$package.tar.gz &&' \
+            '    tar xvf $package.tar.gz &&' \
             '    cd $package &&' \
             '    cp -av /local/nikos/pacman_for_dockers ./ &&' \
             '    sudo ./pacman_for_dockers -Syy &&' \
@@ -143,6 +144,7 @@ RUN true \
             '    sudo ./pacman_for_dockers --upgrade $package-*.tar.xz &&' \
             '    cd ../../.. &&' \
             '    rm -r tmp &&' \
+            '    sudo pacman_clean &&' \
             '    true' \
             '}' \
         ; } \
@@ -214,49 +216,24 @@ RUN true \
         | sudo tee -a /usr/share/fish/config.fish \
     && true
 
+RUN /local/nikos/aur_install rubymine
+RUN /local/nikos/aur_install terraform-bin
+RUN /local/nikos/aur_install packer-io
+RUN /local/nikos/aur_install webstorm
+RUN /local/nikos/aur_install clion
 
-RUN parallel aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/'{}' ::: \
-    python-lz4.tar.gz \
-    python2-lz4.tar.gz \
-    python2-gtkglext.tar.gz \
-    rencode.tar.gz \
-    xpra-winswitch.tar.gz \
-    yarn.tar.gz \
-    terraform-bin.tar.gz \
-    packer-io.tar.gz \
-    direnv.tar.gz \
-    && true
+RUN true \
+    && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework.git 9fb82f5 \
+    && sudo pacman_clean
+
 RUN /local/nikos/aur_install python-lz4
 RUN /local/nikos/aur_install python2-lz4
 RUN /local/nikos/aur_install python2-gtkglext
 RUN /local/nikos/aur_install rencode
-RUN true \
-    && /local/nikos/aur_install xpra-winswitch \
-    && true
-RUN true \
-    && /local/nikos/aur_install yarn \
-    && sudo pacman_clean
-#RUN true \
-#    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/rubymine.tar.gz \
-#    && /local/nikos/aur_install rubymine \
-#    && sudo pacman_clean
-RUN true \
-    && /local/nikos/aur_install terraform-bin \
-    && sudo pacman_clean
-#RUN true \
-#    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/webstorm.tar.gz \
-#    && /local/nikos/aur_install webstorm \
-#    && sudo pacman_clean
-#RUN true \
-#    && aria2c --dir /local/nikos/aur https://aur.archlinux.org/cgit/aur.git/snapshot/clion.tar.gz \
-#    && /local/nikos/aur_install clion \
-#    && sudo pacman_clean
-RUN true \
-    && /local/nikos/aur_install packer-io \
-    && sudo pacman_clean
-RUN true \
-    && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework.git 9fb82f5 \
-    && sudo pacman_clean
+RUN /local/nikos/aur_install xpra-winswitch
+RUN /local/nikos/aur_install yarn
+RUN /local/nikos/aur_install direnv
+
 RUN true \
     && mkdir -pv /local/nikos/packages \
     && /local/nikos/fetch_git_package rbenv https://github.com/rbenv/rbenv.git 4f8925a \
@@ -269,18 +246,18 @@ RUN true \
         'env RBENV_ROOT=/usr/local/rbenv /usr/local/rbenv/bin/rbenv "$@"' \
         | sudo tee /usr/local/bin/rbenv \
         && sudo chmod --verbose 755 /usr/local/bin/rbenv \
-    && git clone https://github.com/rbenv/ruby-build.git /usr/local/rbenv/plugins/ruby-build \
+    && git clone https://github.com/rbenv/ruby-build.git /local/nikos/tmp/ruby-build \
+    && mkdir -pv /usr/local/rbenv/plugins/ \
+    && git -C /local/nikos/tmp/ruby-build archive --prefix=ruby-build/ --format=tar HEAD | \
+        tar -C /usr/local/rbenv/plugins/ -xv \
     && sudo chown --recursive root:root /usr/local/rbenv \
-    && sudo pacman_clean
-RUN true \
-    && /local/nikos/aur_install direnv \
     && sudo pacman_clean
 
 #
 # Install the rubies
 #
-RUN printf '%s' 2.3.3 | \
-    parallel -0 sudo rbenv install
+RUN printf '%s\x00%s' 2.4.1 jruby-9.1.10.0 | \
+    parallel --eta --progress --tty -0 sudo rbenv install --verbose
 
 #
 # ### Monster
@@ -314,10 +291,6 @@ RUN true \
     && sudo chown --recursive root:root /usr/share/nvim \
     && sudo find /root -mindepth 1 -maxdepth 1 -print0 | xargs -0 sudo rm -rf \
     && true
-RUN true \
-    && cd /usr/share/nvim/plugged/command-t/ruby/command-t \
-    && sudo ruby extconf.rb \
-    && sudo make
 RUN true \
     && cd /usr/share/nvim/plugged/YouCompleteMe \
     && sudo env USE_PYTHON2=OFF ./install.py \
@@ -405,6 +378,9 @@ RUN true \
     && sudo make \
     && sudo archlinux-java set java-8-openjdk \
     && true
+#     && cd /usr/share/nvim/plugged/command-t/ruby/command-t \
+#     && sudo ruby extconf.rb \
+#     && sudo make
 
 #
 # Global git configuration
