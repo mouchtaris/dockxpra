@@ -372,9 +372,9 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
         | sudo tee /etc/pacman.d/mirrorlist \
     && true
 
-RUN jruby -S gem update --system
+RUN sudo jruby -S gem update --system
 RUN jruby -S gem update
-RUN gem update --system
+RUN sudo gem update --system
 RUN gem update
 
 RUN true \
