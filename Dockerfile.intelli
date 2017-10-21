@@ -216,11 +216,11 @@ RUN true \
         | sudo tee -a /usr/share/fish/config.fish \
     && true
 
-RUN /local/nikos/aur_install rubymine
+# RUN /local/nikos/aur_install rubymine
 RUN /local/nikos/aur_install terraform-bin
-RUN /local/nikos/aur_install packer-io
-RUN /local/nikos/aur_install webstorm
-RUN /local/nikos/aur_install clion
+# RUN /local/nikos/aur_install packer-io
+# RUN /local/nikos/aur_install webstorm
+# RUN /local/nikos/aur_install clion
 
 RUN true \
     && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework.git 9fb82f5 \
