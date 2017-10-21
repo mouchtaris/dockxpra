@@ -157,7 +157,7 @@ RUN true \
             '{' \
             '    cd /local/nikos/packages/"$package" &&' \
             '    ./configure &&' \
-            '    make -j 4 &&' \
+            '    make -j 2 &&' \
             '   sudo make install &&' \
             '   true' \
             '}' \
@@ -223,7 +223,7 @@ RUN /local/nikos/aur_install terraform-bin
 # RUN /local/nikos/aur_install clion
 
 RUN true \
-    && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework.git 9fb82f5 \
+    && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework.git 68a568677cd8d86aaeac1e1b98bfc87a39e5be34 \
     && sudo pacman_clean
 
 RUN /local/nikos/aur_install python-lz4
