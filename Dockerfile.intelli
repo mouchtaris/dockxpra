@@ -256,7 +256,7 @@ RUN true \
 #
 # Install the rubies
 #
-RUN printf '%s\x00%s' 2.4.1 jruby-9.1.10.0 | \
+RUN printf '%s\x00%s\x00%s' 2.4.1 2.4.2 jruby-9.1.10.0 | \
     parallel --eta --progress --tty -0 sudo rbenv install --verbose
 
 #
