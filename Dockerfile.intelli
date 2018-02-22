@@ -11,11 +11,9 @@ WORKDIR /local/nikos
 
 RUN true \
     && printf '%s\n' \
-            'Server = http://172.17.0.1:9000/arch/$repo/os/$arch' \
+            'Server = http://172.17.0.1:14000/leon/arch/$repo/os/$arch' \
         | tee /etc/pacman.d/mirrorlist \
-    && pacman --noconfirm --needed -Sy \
-    && pacman --noconfirm --needed -S archlinux-keyring \
-    && pacman --noconfirm --needed -Su --force \
+    && pacman --noconfirm --needed -Syyu --force \
     && pacman-db-upgrade \
     && printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
         '#!/usr/bin/env bash' \
@@ -217,14 +215,14 @@ RUN true \
     && true
 
 # RUN /local/nikos/aur_install rubymine
-RUN /local/nikos/aur_install terraform-bin
+# RUN /local/nikos/aur_install terraform-bin
 # RUN /local/nikos/aur_install packer-io
 # RUN /local/nikos/aur_install webstorm
 # RUN /local/nikos/aur_install clion
 
-RUN true \
-    && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework.git 68a568677cd8d86aaeac1e1b98bfc87a39e5be34 \
-    && sudo pacman_clean
+# RUN true \
+#     && /local/nikos/fetch_git_and_config_install actor-framework http://github.com/actor-framework/actor-framework.git 68a568677cd8d86aaeac1e1b98bfc87a39e5be34 \
+#     && sudo pacman_clean
 
 RUN /local/nikos/aur_install python-lz4
 RUN /local/nikos/aur_install python2-lz4
@@ -303,18 +301,14 @@ RUN true \
 RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     aspell \
     aspell-en \
-    atom \
     awesome \
     aws-cli \
-    chromium \
     colordiff \
     ctags \
     darkhttpd \
     dnsutils \
     docker-compose \
     ffmpeg \
-    firefox \
-    gconf \
     gdb \
     gkrellm \
     gnupg \
@@ -324,19 +318,15 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     htop \
     httpie \
     imagemagick \
-    intellij-idea-community-edition \
     irssi \
-    jdk8-openjdk \
+    jdk9-openjdk \
+    openjdk9-src \
     jq \
-    jruby \
     libwebp \
     libxtst \
     maven \
-    midori \
-    mysql \
     netcat \
     ninja \
-    openjdk8-src \
     pkgfile \
     postgresql \
     pulseaudio \
@@ -381,7 +371,7 @@ RUN true \
     && cd /opt/jruby/tool/nailgun/ \
     && sudo ./configure \
     && sudo make \
-    && sudo archlinux-java set java-8-openjdk \
+    && sudo archlinux-java set java-9-openjdk \
     && true
 #     && cd /usr/share/nvim/plugged/command-t/ruby/command-t \
 #     && sudo ruby extconf.rb \
