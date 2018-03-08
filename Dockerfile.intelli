@@ -217,7 +217,7 @@ RUN true \
 
 # RUN /local/nikos/aur_install rubymine
  RUN /local/nikos/aur_install terraform-bin
- RUN /local/nikos/aur_install packer-io
+ RUN /local/nikos/aur_install packer
 # RUN /local/nikos/aur_install webstorm
 # RUN /local/nikos/aur_install clion
 
