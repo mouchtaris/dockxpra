@@ -11,7 +11,7 @@ WORKDIR /local/nikos
 
 RUN true \
     && printf '%s\n' \
-            'Server = http://172.17.0.1:14000/leon/arch/$repo/os/$arch' \
+            'Server = http://172.17.0.2:8080/leon/arch/$repo/os/$arch' \
         | tee /etc/pacman.d/mirrorlist \
     && pacman --noconfirm --needed -Syyu --force \
     && pacman-db-upgrade \
@@ -56,6 +56,7 @@ RUN pacman --noconfirm --needed -S --force \
     parallel \
     python \
     ruby-bundler \
+    ruby-rdoc \
     rust \
     sbt \
     sudo \
@@ -320,10 +321,11 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     imagemagick \
     irssi \
     jdk9-openjdk \
-    openjdk9-src \
     jq \
+    jruby \
     libwebp \
     libxtst \
+    openjdk9-src \
     maven \
     netcat \
     ninja \
