@@ -13,7 +13,7 @@ RUN true \
     && printf '%s\n' \
             'Server = http://172.17.0.2:8080/leon/arch/$repo/os/$arch' \
         | tee /etc/pacman.d/mirrorlist \
-    && pacman --noconfirm --needed -Syyu --force \
+    && pacman --noconfirm --needed -Syyu --force pacman-contrib \
     && pacman-db-upgrade \
     && printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' \
         '#!/usr/bin/env bash' \
