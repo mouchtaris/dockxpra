@@ -320,12 +320,12 @@ RUN pacman -Ssq ttf- | xargs sudo pacman --noconfirm --needed -Syyu \
     httpie \
     imagemagick \
     irssi \
-    jdk9-openjdk \
+    jdk10-openjdk \
     jq \
     jruby \
     libwebp \
     libxtst \
-    openjdk9-src \
+    openjdk10-src \
     maven \
     netcat \
     ninja \
@@ -373,7 +373,7 @@ RUN true \
     && cd /opt/jruby/tool/nailgun/ \
     && sudo ./configure \
     && sudo make \
-    && sudo archlinux-java set java-9-openjdk \
+    && sudo archlinux-java set java-10-openjdk \
     && true
 #     && cd /usr/share/nvim/plugged/command-t/ruby/command-t \
 #     && sudo ruby extconf.rb \
