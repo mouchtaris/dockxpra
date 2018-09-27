@@ -207,11 +207,14 @@ RUN true \
         'eval (direnv hook fish)' \
         'set -x EDITOR vim' \
         'set -g fish_key_bindings fish_vi_key_bindings' \
-        'set -g fish_user_paths $HOME/_rute/bin' \
+        'set -g fish_user_paths $HOME/_rute/bin $HOME/.local/bin' \
+        'set -g fish_function_path $fish_function_path "/local/nikos/packages/powerline/powerline/bindings/fish"' \
         'function fish_user_key_bindings' \
         '  echo +++[loading/...]  fish_user_key_bindings' \
         '  bind -M insert \cf forward-char' \
         'end' \
+        '' \
+        'powerline-setup' \
         | sudo tee -a /usr/share/fish/config.fish \
     && true
 
@@ -233,6 +236,9 @@ RUN /local/nikos/aur_install rencode
 RUN /local/nikos/aur_install yarn
 RUN /local/nikos/aur_install direnv
 
+#
+# Install the rubies
+#
 RUN true \
     && mkdir -pv /local/nikos/packages \
     && /local/nikos/fetch_git_package rbenv https://github.com/rbenv/rbenv.git 4f8925a \
@@ -252,9 +258,6 @@ RUN true \
     && sudo chown --recursive root:root /usr/local/rbenv \
     && sudo pacman_clean
 
-#
-# Install the rubies
-#
 RUN printf '%s\x00%s\x00%s' 2.4.1 2.4.2 jruby-9.1.10.0 | \
     parallel --eta --progress --tty -0 sudo rbenv install --verbose
 
@@ -368,6 +371,17 @@ RUN sudo jruby -S gem update --system
 RUN sudo jruby -S gem update
 RUN sudo gem update --system
 RUN sudo gem update
+
+#
+# Install powerline
+#
+RUN true \
+    && \
+        /local/nikos/fetch_git_package \
+            powerline \
+            https://github.com/powerline/powerline.git \
+            develop \
+            --recursive
 
 RUN true \
     && cd /opt/jruby/tool/nailgun/ \
