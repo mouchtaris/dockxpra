@@ -258,8 +258,8 @@ RUN true \
     && sudo chown --recursive root:root /usr/local/rbenv \
     && sudo pacman_clean
 
-RUN printf '%s\x00%s\x00%s' 2.4.1 2.4.2 jruby-9.1.10.0 | \
-    parallel --eta --progress --tty -0 sudo rbenv install --verbose
+RUN printf '%s\x00%s\x00%s' 2.5.1 2.5.3 jruby-9.2.0.0 | \
+    parallel --eta --progress --tty -0 -j 4 --lb bash -c \''sudo rbenv install --verbose $1 | sed -r -e s/\^/\[$1\]\ /'\' -
 
 #
 # ### Monster
